@@ -30,7 +30,6 @@
         android:rowCount="1"
         android:layout_gravity="center"
         android:useDefaultMargins="true"
-
        >
 
         <androidx.cardview.widget.CardView

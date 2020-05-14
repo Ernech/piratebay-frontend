@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Piratebay"
+       android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:textSize="45dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Mobile App"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="50dp"
+        android:textSize="18dp"/>
+    <EditText
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Username"
+        android:id="@+id/etNomUs"
+        android:inputType="textEmailAddress"
+        />
+    <EditText
+        android:layout_width="255dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/etPass"/>
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:background="#593C3C39"
+        android:text="Ingresar"
+        android:textColor="#000"
+        android:id="@+id/btnEnter"
+        />
+
+</LinearLayout>

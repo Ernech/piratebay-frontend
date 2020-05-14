@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.MenuActivity"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Piratebay"
+        android:layout_gravity="center"
+        android:layout_marginTop="25dp"
+        android:textSize="45dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Mobile App"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="30dp"
+        android:textSize="18dp"/>
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:columnCount="1"
+        android:rowCount="1"
+        android:layout_gravity="center"
+        android:useDefaultMargins="true"
+
+       >
+
+        <androidx.cardview.widget.CardView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/borde_card_view"
+            android:id="@+id/cvUsuarios"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1"
+            android:foreground="?selectableItemBackground">
+            <LinearLayout
+                android:background="@drawable/borde_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:orientation="vertical"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/usersicon"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Gestión de Usuarios"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvGestionProductos"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1"
+            android:foreground="?selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:orientation="vertical"
+                android:background="@drawable/borde_card_view"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/boxicon"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Gestión de productos"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvGestionAlmacenes"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1"
+            android:foreground="?selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:orientation="vertical"
+                android:background="@drawable/borde_card_view"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/dropboxicon"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Gestión de Almacenes"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/cvOrdenesProveedores"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_columnWeight="1"
+            app:layout_rowWeight="1"
+            android:foreground="?selectableItemBackground">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:orientation="vertical"
+                android:background="@drawable/borde_card_view"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/shoppingicon"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="Órdenes a proveedores"
+                    android:textAlignment="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </GridLayout>
+
+
+
+</LinearLayout>

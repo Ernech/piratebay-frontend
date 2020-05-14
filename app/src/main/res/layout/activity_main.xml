@@ -22,14 +22,14 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="50dp"
         android:textSize="18dp"/>
+
     <EditText
+        android:id="@+id/etNomUs"
         android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="Username"
-        android:id="@+id/etNomUs"
-        android:inputType="textEmailAddress"
-        />
+        android:inputType="text" />
     <EditText
         android:layout_width="255dp"
         android:layout_height="wrap_content"

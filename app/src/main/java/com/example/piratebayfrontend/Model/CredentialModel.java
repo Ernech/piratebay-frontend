@@ -1,8 +1,14 @@
 package com.example.piratebayfrontend.Model;
 
-public class CredentialModel {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
+public class CredentialModel {
+    @SerializedName("username")
+    @Expose
     private String username;
+    @SerializedName("password")
+    @Expose
     private String password;
 
     public CredentialModel() {

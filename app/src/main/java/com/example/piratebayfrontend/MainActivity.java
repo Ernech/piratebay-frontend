@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.piratebayfrontend.Clases.MyApiAdapter;
+import com.example.piratebayfrontend.Model.CredentialModel;
 
 import java.util.Map;
 
@@ -33,11 +35,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
                     Toast.makeText(getApplicationContext(),"Complete los campos",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    call= MyApiAdapter.getApiService().getLogin(etUserName.getText().toString().trim(),etPassword.getText().toString().trim());
+                    CredentialModel credentialModel = new CredentialModel();
+                    credentialModel.setUsername(etUserName.getText().toString().trim());
+                    credentialModel.setPassword(etPassword.getText().toString().trim());
+                    sendToPostLogin(credentialModel);
+
                 }
             }
         });
-        call.enqueue(this);
+
 
 
     }
@@ -46,17 +52,23 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
         etPassword = findViewById(R.id.etPass);
         btnenter = findViewById(R.id.btnEnter);
     }
+    private void sendToPostLogin(CredentialModel credentialModel){
+        call= MyApiAdapter.getApiService().getLogin(credentialModel.getUsername(),credentialModel.getPassword());
+        call.enqueue(this);
+
+    }
 
     @Override
     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-        if(response.isSuccessful()){
-            Map<String,Object> userValidation=response.body();
-            System.out.println("Respuesta "+userValidation);
-        }
+       if(response.isSuccessful()){
+           Map<String,Object> postLoginResponse=response.body();
+           Log.d("onResponse:",postLoginResponse+"");
+       }
+
     }
 
     @Override
     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-
+        Log.d("Error:",t+"");
     }
 }

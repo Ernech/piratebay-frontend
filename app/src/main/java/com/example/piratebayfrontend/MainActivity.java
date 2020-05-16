@@ -2,27 +2,36 @@ package com.example.piratebayfrontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.piratebayfrontend.Activities.MenuActivity;
 import com.example.piratebayfrontend.Clases.MyApiAdapter;
 import com.example.piratebayfrontend.Model.CredentialModel;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements Callback<Map<String, Object>> {
     EditText etUserName,etPassword;
     Button btnenter;
     Call<Map<String,Object>> call;
+    Map<String, Object> jsonParams;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +62,14 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
         btnenter = findViewById(R.id.btnEnter);
     }
     private void sendToPostLogin(CredentialModel credentialModel){
-        call= MyApiAdapter.getApiService().getLogin(credentialModel.getUsername(),credentialModel.getPassword());
+        //Mapa para pasar los campos del formulario
+        jsonParams = new HashMap<>();
+        //Colocar los datos en el mapa
+        jsonParams.put("username",credentialModel.getUsername());
+        jsonParams.put("password",credentialModel.getPassword());
+        //Pasar los datos del mapa en formato JSON
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
+        call= MyApiAdapter.getApiService().getLogin(body);
         call.enqueue(this);
 
     }
@@ -63,6 +79,15 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
        if(response.isSuccessful()){
            Map<String,Object> postLoginResponse=response.body();
            Log.d("onResponse:",postLoginResponse+"");
+          Log.d("Key:",postLoginResponse.containsKey("UserId")+"");
+          //Si la respuesta envia un userId se accede el menu
+           if(postLoginResponse.containsKey("UserId")){
+               Intent intent=new Intent(MainActivity.this, MenuActivity.class);
+               startActivity(intent);
+           }
+           else{
+               Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrecta",Toast.LENGTH_SHORT).show();
+           }
        }
 
     }

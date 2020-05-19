@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
         jsonParams.put("username",credentialModel.getUsername());
         jsonParams.put("password",credentialModel.getPassword());
         //Pasar los datos del mapa en formato JSON
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
+                (new JSONObject(jsonParams)).toString());
         call = MyApiAdapter.getApiService().getLogin(body);
         call.enqueue(this);
     }
@@ -76,16 +77,19 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
        if(response.isSuccessful()){
            Map<String,Object> postLoginResponse = response.body();
-           Log.d("onResponse:",postLoginResponse+"");
+           Log.d("onResponse",postLoginResponse+"");
 
            if(postLoginResponse.containsValue("Authentication OK")){
                Intent intent=new Intent(MainActivity.this, MenuActivity.class);
                startActivity(intent);
            }
 
-           if(postLoginResponse.containsValue("User or password invalid")){
+           else if(postLoginResponse.get("Message").equals("User or password invalid")){
                Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrecta",Toast.LENGTH_SHORT).show();
            }
+       }
+       else{
+           Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrecta",Toast.LENGTH_SHORT).show();
        }
     }
 

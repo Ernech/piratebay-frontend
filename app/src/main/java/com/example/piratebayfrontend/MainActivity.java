@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
     Button btnenter;
     Call<Map<String,Object>> call;
     Map<String, Object> jsonParams;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,19 +49,17 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
                     credentialModel.setUsername(etUserName.getText().toString().trim());
                     credentialModel.setPassword(etPassword.getText().toString().trim());
                     sendToPostLogin(credentialModel);
-
                 }
             }
         });
-
-
-
     }
+
     private void bindUI(){
-        etUserName=findViewById(R.id.etNomUs);
+        etUserName = findViewById(R.id.etNomUs);
         etPassword = findViewById(R.id.etPass);
         btnenter = findViewById(R.id.btnEnter);
     }
+
     private void sendToPostLogin(CredentialModel credentialModel){
         //Mapa para pasar los campos del formulario
         jsonParams = new HashMap<>();
@@ -69,27 +68,25 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
         jsonParams.put("password",credentialModel.getPassword());
         //Pasar los datos del mapa en formato JSON
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(jsonParams)).toString());
-        call= MyApiAdapter.getApiService().getLogin(body);
+        call = MyApiAdapter.getApiService().getLogin(body);
         call.enqueue(this);
-
     }
 
     @Override
     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
        if(response.isSuccessful()){
-           Map<String,Object> postLoginResponse=response.body();
+           Map<String,Object> postLoginResponse = response.body();
            Log.d("onResponse:",postLoginResponse+"");
-          Log.d("Key:",postLoginResponse.containsKey("UserId")+"");
-          //Si la respuesta envia un userId se accede el menu
-           if(postLoginResponse.containsKey("UserId")){
+
+           if(postLoginResponse.containsValue("Authentication OK")){
                Intent intent=new Intent(MainActivity.this, MenuActivity.class);
                startActivity(intent);
            }
-           else{
+
+           if(postLoginResponse.containsValue("User or password invalid")){
                Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrecta",Toast.LENGTH_SHORT).show();
            }
        }
-
     }
 
     @Override

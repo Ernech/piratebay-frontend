@@ -20,7 +20,7 @@ public class MyApiAdapter {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
-        String baseUrl =  "http://192.168.0.110:8008/api/v1/";
+        String baseUrl =  "http://192.168.0.104:8008/api/v1/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()

@@ -44,6 +44,7 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="6dp"
             android:foreground="?selectableItemBackground">
+
             <LinearLayout
                 android:background="@drawable/borde_card_view"
                 android:layout_width="match_parent"
@@ -68,7 +69,6 @@
                     />
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView

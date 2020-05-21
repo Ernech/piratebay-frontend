@@ -46,7 +46,7 @@
         android:layout_marginTop="25dp"
         android:background="#593C3C39"
         android:text="Ingresar"
-        android:textColor="#000"
+        android:textColor="#fff"
         android:id="@+id/btnEnter"
         />
 

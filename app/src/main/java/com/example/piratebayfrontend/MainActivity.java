@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +24,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity implements Callback<Map<String, Object>> {
     EditText etUserName,etPassword;
@@ -79,12 +77,12 @@ public class MainActivity extends AppCompatActivity implements Callback<Map<Stri
            Map<String,Object> postLoginResponse = response.body();
            Log.d("onResponse",postLoginResponse+"");
 
-           if(postLoginResponse.containsValue("Authentication OK")){
+           if(response.code()==200){
                Intent intent=new Intent(MainActivity.this, MenuActivity.class);
                startActivity(intent);
            }
 
-           else if(postLoginResponse.get("Message").equals("User or password invalid")){
+           else{
                Toast.makeText(getApplicationContext(),"Usuario o contraseña incorrecta",Toast.LENGTH_SHORT).show();
            }
        }

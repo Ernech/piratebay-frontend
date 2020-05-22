@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements LoginCallBack {
     EditText etUserName,etPassword;
     Button btnEnter;
     LoginController loginController;
+    LoginCallBack callBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoginCallBack {
                     credentialModel.setUsername(etUserName.getText().toString().trim());
                     credentialModel.setPassword(etPassword.getText().toString().trim());
                     loginController=new LoginController(credentialModel);
-                    loginController.sendToPostLogin();
-
+                    loginController.sendToPostLogin(callBack);
                 }
             }
         });
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements LoginCallBack {
 
     @Override
     public void onSuccess(boolean value) {
-        System.out.println("En la interfaz");
+        System.out.println("En la interfaz"+value);
     }
 
     @Override

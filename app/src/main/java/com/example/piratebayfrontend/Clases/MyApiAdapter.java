@@ -20,12 +20,12 @@ public class MyApiAdapter {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
 
-        String baseUrlMariana =  "http://192.168.0.104:8008/api/v1/";
+        String baseUrlMariana =  "http://192.168.0.14:8008/api/v1/";
         String baseUrlErnesto =  "http://192.168.0.112:8008/api/v1/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrlErnesto)
+                    .baseUrl(baseUrlMariana)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build()) // <-- usamos el log level
                     .build();

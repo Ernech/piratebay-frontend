@@ -1,6 +1,6 @@
 package com.example.piratebayfrontend.Interfaces;
 
 public interface LoginCallBack {
-    void onSuccess(boolean value);
-    void onError();
+    public void onSuccess(boolean value);
+    public void onError();
 }

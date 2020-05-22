@@ -17,44 +17,52 @@ import retrofit2.Response;
 
 public class LoginController implements Callback<Map<String, Object>> {
 
-    LoginCallBack loginCallBack;
-    Call<Map<String,Object>> call;
-    Map<String, Object> jsonParams;
+//    Call<Map<String,Object>> call;
+//    Map<String, Object> jsonParams;
     CredentialModel credentialModel;
+    Boolean status;
     public LoginController (CredentialModel credentialModel){
         this.credentialModel=credentialModel;
     }
 
-
-    public void sendToPostLogin(){
+    public void sendToPostLogin(final LoginCallBack callBack){
         //Mapa para pasar los campos del formulario
-        jsonParams = new HashMap<>();
+        Map<String, Object> jsonParams = new HashMap<>();
         //Colocar los datos en el mapa
         jsonParams.put("username",credentialModel.getUsername());
         jsonParams.put("password",credentialModel.getPassword());
         //Pasar los datos del mapa en formato JSON
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
-        call = MyApiAdapter.getApiService().getLogin(body);
-        call.enqueue(this);
+        Call<Map<String,Object>> call = MyApiAdapter.getApiService().getLogin(body);
+        call.enqueue(new Callback<Map<String, Object>>() {
+            @Override
+            public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
+                if(response.isSuccessful()) {
+                    Map<String, Object> postLoginResponse = response.body();
+                    Log.d("onResponse", postLoginResponse + "");
+                    if (response.code() == 200) {
+                        callBack.onSuccess(true);
+                    } else {
+                        callBack.onSuccess(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Map<String, Object>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-        if(response.isSuccessful()){
-            Map<String,Object> postLoginResponse = response.body();
-            Log.d("onResponse",postLoginResponse+"");
-            if(response.code()==200){
-                System.out.println("Respuesta OK");
-                loginCallBack.onSuccess(true);
-            }
-        }
 
     }
 
     @Override
     public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-        loginCallBack.onError();
 
     }
 }

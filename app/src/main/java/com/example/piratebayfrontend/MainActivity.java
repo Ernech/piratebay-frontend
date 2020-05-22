@@ -12,15 +12,15 @@ import android.widget.Toast;
 
 import com.example.piratebayfrontend.Activities.MenuActivity;
 import com.example.piratebayfrontend.Controladores.LoginController;
+import com.example.piratebayfrontend.Interfaces.LoginCallBack;
 import com.example.piratebayfrontend.Model.CredentialModel;
 
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements LoginCallBack {
     EditText etUserName,etPassword;
     Button btnEnter;
     LoginController loginController;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity{
                     credentialModel.setPassword(etPassword.getText().toString().trim());
                     loginController=new LoginController(credentialModel);
                     loginController.sendToPostLogin();
-                    System.out.println("Respuesta");
 
                 }
             }
@@ -52,5 +51,13 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    @Override
+    public void onSuccess(boolean value) {
+        System.out.println("En la interfaz");
+    }
 
+    @Override
+    public void onError() {
+
+    }
 }

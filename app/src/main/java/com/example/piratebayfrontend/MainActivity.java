@@ -15,18 +15,16 @@ import com.example.piratebayfrontend.Controladores.LoginController;
 import com.example.piratebayfrontend.Interfaces.LoginCallBack;
 import com.example.piratebayfrontend.Model.CredentialModel;
 
-
-
-public class MainActivity extends AppCompatActivity implements LoginCallBack {
+public class MainActivity extends AppCompatActivity {
     EditText etUserName,etPassword;
     Button btnEnter;
     LoginController loginController;
-    LoginCallBack callBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bindUI();
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,8 +36,18 @@ public class MainActivity extends AppCompatActivity implements LoginCallBack {
                     CredentialModel credentialModel = new CredentialModel();
                     credentialModel.setUsername(etUserName.getText().toString().trim());
                     credentialModel.setPassword(etPassword.getText().toString().trim());
-                    loginController=new LoginController(credentialModel);
-                    loginController.sendToPostLogin(callBack);
+                    loginController = new LoginController(credentialModel);
+                    loginController.sendToPostLogin(new LoginCallBack() {
+                        @Override
+                        public void onSuccess(boolean value) {
+                            if(value){
+                                Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -49,16 +57,5 @@ public class MainActivity extends AppCompatActivity implements LoginCallBack {
         etUserName = findViewById(R.id.etNomUs);
         etPassword = findViewById(R.id.etPass);
         btnEnter = findViewById(R.id.btnEnter);
-    }
-
-
-    @Override
-    public void onSuccess(boolean value) {
-        System.out.println("En la interfaz"+value);
-    }
-
-    @Override
-    public void onError() {
-
     }
 }

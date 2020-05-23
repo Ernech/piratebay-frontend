@@ -1,6 +1,8 @@
 package com.example.piratebayfrontend.Controladores;
 
 import android.util.Log;
+import android.widget.Toast;
+
 import com.example.piratebayfrontend.Clases.MyApiAdapter;
 import com.example.piratebayfrontend.Interfaces.LoginCallBack;
 import com.example.piratebayfrontend.Model.CredentialModel;
@@ -17,10 +19,7 @@ import retrofit2.Response;
 
 public class LoginController implements Callback<Map<String, Object>> {
 
-//    Call<Map<String,Object>> call;
-//    Map<String, Object> jsonParams;
     CredentialModel credentialModel;
-    Boolean status;
     public LoginController (CredentialModel credentialModel){
         this.credentialModel=credentialModel;
     }
@@ -43,7 +42,9 @@ public class LoginController implements Callback<Map<String, Object>> {
                     Log.d("onResponse", postLoginResponse + "");
                     if (response.code() == 200) {
                         callBack.onSuccess(true);
-                    } else {
+                    }
+                } else {
+                    if (response.code() == 403) {
                         callBack.onSuccess(false);
                     }
                 }

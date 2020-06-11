@@ -41,11 +41,11 @@ public class LoginController implements Callback<Map<String, Object>> {
                     Map<String, Object> postLoginResponse = response.body();
                     Log.d("onResponse", postLoginResponse + "");
                     if (response.code() == 200) {
-                        callBack.onSuccess(true);
+                        callBack.onSuccess(true,postLoginResponse.get("authentication"),postLoginResponse.get("refresh"));
                     }
                 } else {
                     if (response.code() == 403) {
-                        callBack.onSuccess(false);
+                        callBack.onSuccess(false,null,null);
                     }
                 }
             }

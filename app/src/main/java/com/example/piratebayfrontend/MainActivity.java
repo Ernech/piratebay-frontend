@@ -39,10 +39,14 @@ public class MainActivity extends AppCompatActivity {
                     loginController = new LoginController(credentialModel);
                     loginController.sendToPostLogin(new LoginCallBack() {
                         @Override
-                        public void onSuccess(boolean value) {
-                            if(value){
-                                Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                        public void onSuccess(boolean value,Object authnToken, Object refreshToken) {
+                            if(value && authnToken!=null && refreshToken!=null){
+                               Intent i = new Intent(getApplicationContext(), MenuActivity.class);
+                                i.putExtra("authnToken",(String) authnToken);
+                                i.putExtra("refreshToken",(String)refreshToken);
                                 startActivity(i);
+                                System.out.println("ATUHN "+authnToken);
+                                System.out.println("REFRESH "+refreshToken);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Usuario o contraseña incorrecta", Toast.LENGTH_SHORT).show();
                             }

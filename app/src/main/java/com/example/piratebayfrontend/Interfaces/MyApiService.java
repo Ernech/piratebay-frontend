@@ -18,5 +18,12 @@ public interface MyApiService {
     Call<Map<String,Object>> getLogin(
             @Body RequestBody requestBody
             );
+    //Obtener nuevos tokens
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("security/refresh")
+    Call<Map<String,Object>> getNewTokens(
+            @Body RequestBody requestBody
+    );
 
 }

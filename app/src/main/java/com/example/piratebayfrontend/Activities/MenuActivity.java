@@ -6,10 +6,12 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.piratebayfrontend.Clases.JWTUtils;
 import com.example.piratebayfrontend.Controladores.RefreshTokenController;
 import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.MainActivity;
@@ -34,6 +36,12 @@ public class MenuActivity extends AppCompatActivity {
         refreshToken = bundle.get("refreshToken");
         System.out.println("ATUHN2 "+authnToken);
         System.out.println("REFRESH2 "+refreshToken);
+        try{
+            JWTUtils.getFeaturesFromJWT(authnToken.toString());
+        }catch (Exception e){
+            Log.e("Error",e+"");
+        }
+
         cvUsuarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

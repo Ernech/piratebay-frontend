@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.FormActivity"></activity>
+        <activity android:name=".Activities.UsersListActivity"></activity>
+        <activity android:name=".Activities.FormActivity" />
         <activity android:name=".Activities.MenuActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

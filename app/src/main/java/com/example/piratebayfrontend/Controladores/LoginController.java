@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginController implements Callback<Map<String, Object>> {
+public class LoginController {
 
     CredentialModel credentialModel;
     public LoginController (CredentialModel credentialModel){
@@ -27,12 +27,15 @@ public class LoginController implements Callback<Map<String, Object>> {
     public void sendToPostLogin(final LoginCallBack callBack){
         //Mapa para pasar los campos del formulario
         Map<String, Object> jsonParams = new HashMap<>();
+
         //Colocar los datos en el mapa
         jsonParams.put("username",credentialModel.getUsername());
         jsonParams.put("password",credentialModel.getPassword());
+
         //Pasar los datos del mapa en formato JSON
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
+
         Call<Map<String,Object>> call = MyApiAdapter.getApiService().getLogin(body);
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
@@ -41,7 +44,7 @@ public class LoginController implements Callback<Map<String, Object>> {
                     Map<String, Object> postLoginResponse = response.body();
                     Log.d("onResponse", postLoginResponse + "");
                     if (response.code() == 200) {
-                        callBack.onSuccess(true,postLoginResponse.get("authentication"),postLoginResponse.get("refresh"));
+                        callBack.onSuccess(true, postLoginResponse.get("authentication"), postLoginResponse.get("refresh"));
                     }
                 } else {
                     if (response.code() == 403) {
@@ -55,15 +58,5 @@ public class LoginController implements Callback<Map<String, Object>> {
 
             }
         });
-    }
-
-    @Override
-    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-
-    }
-
-    @Override
-    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-
     }
 }

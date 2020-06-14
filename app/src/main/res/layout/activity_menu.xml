@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MenuActivity"
     android:orientation="vertical">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnRefresh"
+        android:text="Refresh"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,6 +21,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="25dp"
         android:textSize="45dp"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,6 +30,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="30dp"
         android:textSize="18dp"/>
+
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,7 +120,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/cvGestionAlmacenes"
+            android:id="@+id/cvSalir"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="10dp"
@@ -129,63 +138,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/dropboxicon"
+                    android:src="@drawable/iconosalir"
+
                     />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="Gestión de Almacenes"
+                    android:text="Salir"
                     android:textAlignment="center"
                     android:textSize="18dp"
                     android:textStyle="bold"
                     />
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/cvOrdenesProveedores"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="10dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="6dp"
-            android:foreground="?selectableItemBackground">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:orientation="vertical"
-                android:background="@drawable/borde_card_view"
-                >
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/shoppingicon"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="Órdenes a proveedores"
-                    android:textAlignment="center"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    />
-
-            </LinearLayout>
-
         </androidx.cardview.widget.CardView>
     </GridLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnRefresh"
-        android:text="Refresh"/>
-
 </LinearLayout>

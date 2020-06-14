@@ -66,10 +66,11 @@ public class MenuActivity extends AppCompatActivity {
                 refreshTokenController = new RefreshTokenController(tokens.get("refresh"));
                 refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
                     @Override
-                    public void onSuccess(boolean value, Object authnTokenN, Object refreshTokenN) {
-                        if(value && authnTokenN!=null && refreshTokenN!=null){
-                            System.out.println("ATUHNN !!!!!!!!!!!!!!!!1"+authnTokenN);
-                            System.out.println("REFRESHN !!!!!!!!!!!!!!!!!!!"+refreshTokenN);
+                    public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
+                        if(value && newAuthnToken!=null && newRefreshToken!=null){
+                            TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
+                        } else {
+                            // TODO Volver al login
                         }
                     }
                 });

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.piratebayfrontend.Clases.JWTUtils;
 import com.example.piratebayfrontend.Clases.TokensControl;
+import com.example.piratebayfrontend.Clases.VerifyFeatures;
 import com.example.piratebayfrontend.Controladores.RefreshTokenController;
 import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.MainActivity;
@@ -28,10 +29,9 @@ import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
 
-    Map<String, String> tokens;
-    RefreshTokenController refreshTokenController;
-    Button btnRefresh;
     CardView cvUsuarios;
+    CardView cvProductos;
+    CardView cvSalir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,17 +39,21 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         bindUI();
-        // Se recuperan los tokens generados
-        tokens = TokensControl.retrieveTokens(getApplicationContext());
 
-        try{
-            JSONArray features = JWTUtils.getFeaturesFromJWT(tokens.get("authentication"));
+        // Verificar las features de un usuario
+        boolean hasFeaturePageProductManagement = VerifyFeatures.hasFeature(getApplicationContext(), "PAGE_PRODUCT_MANAGEMENT");
+        boolean hasFeaturePageUserManagement = VerifyFeatures.hasFeature(getApplicationContext(), "PAGE_USER_MANAGEMENT");
 
-            System.out.println(features.get(0));
-            System.out.println(features.get(1));
-            System.out.println(features.get(2));
-        }catch (Exception e){
-            Log.e("Error",e+"");
+        // Admin tiene disponibles las tres features.
+        // Warehouse Supervisor no tiene disponible el botón para eliminar usuarios.
+        // Warehouse Employee sólo tiene disponible la página de productos.
+
+        if(hasFeaturePageProductManagement){
+            cvProductos.setVisibility(View.VISIBLE);
+        }
+
+        if(hasFeaturePageUserManagement){
+            cvUsuarios.setVisibility(View.VISIBLE);
         }
 
         cvUsuarios.setOnClickListener(new View.OnClickListener() {
@@ -59,27 +63,11 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        btnRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                refreshTokenController = new RefreshTokenController(tokens.get("refresh"));
-                refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
-                    @Override
-                    public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
-                        if(value && newAuthnToken!=null && newRefreshToken!=null){
-                            TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
-                        } else {
-                            // TODO Volver al login
-                        }
-                    }
-                });
-            }
-        });
     }
 
     private void bindUI(){
-        btnRefresh = findViewById(R.id.btnRefresh);
         cvUsuarios = findViewById(R.id.cvUsuarios);
+        cvProductos = findViewById(R.id.cvGestionProductos);
+        cvSalir = findViewById(R.id.cvSalir);
     }
 }

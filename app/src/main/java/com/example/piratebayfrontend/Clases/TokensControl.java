@@ -27,4 +27,11 @@ public class TokensControl {
         tokens.put("refresh", refreshToken);
         return tokens;
     }
+
+    public static void removeTokens (Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+    }
 }

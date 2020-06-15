@@ -26,8 +26,6 @@ public class RefreshTokenController implements Callback<Map<String, Object>> {
         this.refreshToken = refreshToken;
     }
 
-
-
     public void sendToPostRefreshToken(final RefreshTokenCallBack callBack){
         //Mapa para pasar los campos del formulario
         Map<String, Object> jsonParams = new HashMap<>();
@@ -47,7 +45,7 @@ public class RefreshTokenController implements Callback<Map<String, Object>> {
                         callBack.onSuccess(true,postRefreshTokenResponse.get("authentication"),postRefreshTokenResponse.get("refresh"));
                     }
                 } else {
-                    if (response.code() == 403) {
+                    if (response.code() == 500) {
                         callBack.onSuccess(false,null,null);
                     }
                 }

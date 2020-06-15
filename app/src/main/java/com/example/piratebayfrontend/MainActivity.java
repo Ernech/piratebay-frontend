@@ -2,9 +2,7 @@ package com.example.piratebayfrontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -47,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                             if(value && authnToken!=null && refreshToken!=null){
                                 // Guardar los tokens en Shared Preferences
                                 TokensControl.saveTokens(authnToken, refreshToken, getApplicationContext());
+
                                 // Ir al menú
                                 Intent i = new Intent(getApplicationContext(), MenuActivity.class);
                                 startActivity(i);

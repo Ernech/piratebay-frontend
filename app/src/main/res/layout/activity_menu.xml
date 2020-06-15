@@ -8,12 +8,6 @@
     tools:context=".Activities.MenuActivity"
     android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnRefresh"
-        android:text="Refresh"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,7 +46,9 @@
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="6dp"
-            android:foreground="?selectableItemBackground">
+            android:foreground="?selectableItemBackground"
+            android:visibility="gone"
+            >
 
             <LinearLayout
                 android:background="@drawable/borde_card_view"
@@ -90,7 +86,8 @@
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="6dp"
-            android:foreground="?selectableItemBackground">
+            android:foreground="?selectableItemBackground"
+            android:visibility="gone">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

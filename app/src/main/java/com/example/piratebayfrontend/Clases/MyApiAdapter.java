@@ -20,11 +20,11 @@ public class MyApiAdapter {
         httpClient.addInterceptor(logging);
 
         String baseUrlMariana =  "http://192.168.0.13:8008/api/v1/";
-        String baseUrlErnesto =  "http://192.168.0.113:8008/api/v1/";
+        String baseUrlErnesto =  "http://192.168.0.102:8008/api/v1/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrlMariana)
+                    .baseUrl(baseUrlErnesto)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build()) // <-- usamos el log level
                     .build();

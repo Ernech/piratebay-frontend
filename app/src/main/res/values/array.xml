@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Array con la cabecera de la tabla-->
-    <string-array name="cabecera_tabla">
+    <string-array name="cabecera_tabla__warehouse_employee">
         <item>ID Usuario</item>
         <item>Nombre de Usuario</item>
         <item>Email</item>
         <item>Teléfono</item>
+        <item>Editar</item>
+    </string-array>
+    <string-array name="cabecera_tabla_administrador">
+        <item>ID Usuario</item>
+        <item>Nombre de Usuario</item>
+        <item>Email</item>
+        <item>Teléfono</item>
+        <item>Editar</item>
+        <item>Eliminar</item>
     </string-array>
 </resources>

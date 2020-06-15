@@ -63,11 +63,24 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        cvSalir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TokensControl.removeTokens(getApplicationContext());
+                logOut();
+            }
+        });
     }
 
     private void bindUI(){
         cvUsuarios = findViewById(R.id.cvUsuarios);
         cvProductos = findViewById(R.id.cvGestionProductos);
         cvSalir = findViewById(R.id.cvSalir);
+    }
+
+    private void logOut(){
+        Intent intent = new Intent(MenuActivity.this,MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

@@ -2,8 +2,10 @@ package com.example.piratebayfrontend.Clases;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -45,6 +47,7 @@ public class Tabla {
             texto.setTextAppearance(activity, R.style.estilo_celda);
             texto.setBackgroundResource(R.drawable.tabla_celda_cabecera);
             texto.setLayoutParams(layoutCelda);
+            texto.setTextColor(Color.WHITE);
             fila.addView(texto);
         }
         tabla.addView(fila);

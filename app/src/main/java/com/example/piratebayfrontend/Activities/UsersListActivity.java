@@ -31,7 +31,7 @@ public class UsersListActivity extends AppCompatActivity {
     Button btnRefresh;
     RefreshTokenController refreshTokenController;
     Map<String, String> tokens;
-    String columsUserList[];
+    boolean authnTokenExpired;
     boolean hasFeatureButtonDeleteUSer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,29 +40,23 @@ public class UsersListActivity extends AppCompatActivity {
 
         bindUI();
         hasFeatureButtonDeleteUSer = VerifyFeatures.hasFeature(getApplicationContext(), "BUTTON_DELETE_USER");
-        if(hasFeatureButtonDeleteUSer){
-            tabla.agregarCabecera(R.array.cabecera_tabla_administrador);
-        }
-        else{
-            tabla.agregarCabecera(R.array.cabecera_tabla__warehouse_employee);
-        }
+       generateTableHeader();
+        tokens = TokensControl.retrieveTokens(getApplicationContext());
+        listUsers();
 
-        final Map<String, String> tokens = TokensControl.retrieveTokens(getApplicationContext());
-
-        UserController userController= new UserController(tokens.get("authentication"));
-        userController.getUsersList(new UserCallBack() {
-            @Override
-            public void onSuccess(boolean value, ArrayList<UserModel> usersList) {
-                if(value && usersList!=null){
-                    agregarUsuarios(usersList);
-                }
-            }
-        });
 
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               refreshTokens();
+                if (!authnTokenExpired){
+                    tabla.clearRows();
+                    generateTableHeader();
+                    refreshListUsers();
+                }
+                else{
+                    refreshTokens();
+                }
+
             }
         });
     }
@@ -86,6 +80,34 @@ public class UsersListActivity extends AppCompatActivity {
             tabla.agregarFilaTabla(users);
         }
     }
+    private void listUsers(){
+        UserController userController= new UserController(tokens.get("authentication"));
+        userController.getUsersList(new UserCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<UserModel> usersList) {
+                if(value && usersList!=null){
+                    agregarUsuarios(usersList);
+                }else{
+                    btnRefresh.setText("Refrescar tokens");
+                }
+            }
+        });
+    }
+    private void refreshListUsers(){
+        UserController userController= new UserController(tokens.get("authentication"));
+        userController.getUsersList(new UserCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<UserModel> usersList) {
+                if(value && usersList!=null){
+                    agregarUsuarios(usersList);
+                    authnTokenExpired=false;
+                }else{
+                    authnTokenExpired = true;
+                    btnRefresh.setText("Refrescar tokens");
+                }
+            }
+        });
+    }
     private void refreshTokens(){
         refreshTokenController = new RefreshTokenController(tokens.get("refresh"));
         refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
@@ -93,7 +115,12 @@ public class UsersListActivity extends AppCompatActivity {
             public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
                 if(value && newAuthnToken!=null && newRefreshToken!=null){
                     TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
+                    tokens.clear();
+                    tokens = TokensControl.retrieveTokens(getApplicationContext());
+                    // tokens.put("authentication", (String) newAuthnToken);
+                    //tokens.put("refresh", (String) newRefreshToken);
                     btnRefresh.setText("Actualizar Datos");
+                    authnTokenExpired =false;
                 } else {
                     TokensControl.removeTokens(getApplicationContext());
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
@@ -102,5 +129,13 @@ public class UsersListActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+    private void generateTableHeader(){
+        if(hasFeatureButtonDeleteUSer){
+            tabla.agregarCabecera(R.array.cabecera_tabla_administrador);
+        }
+        else{
+            tabla.agregarCabecera(R.array.cabecera_tabla__warehouse_employee);
+        }
     }
 }

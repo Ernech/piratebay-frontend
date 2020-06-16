@@ -128,4 +128,7 @@ public class Tabla {
         p.getTextBounds(texto, 0, texto.length(), bounds);
         return bounds.width();
     }
+    public void clearRows(){
+       tabla.removeAllViews();
+    }
 }

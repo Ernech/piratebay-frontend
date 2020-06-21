@@ -29,9 +29,8 @@ import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
 
+    CardView cvKardex;
     CardView cvUsuarios;
-    CardView cvProductos;
-    CardView cvSalir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +47,6 @@ public class MenuActivity extends AppCompatActivity {
         // Warehouse Supervisor no tiene disponible el botón para eliminar usuarios.
         // Warehouse Employee sólo tiene disponible la página de productos.
 
-        if(hasFeaturePageProductManagement){
-            cvProductos.setVisibility(View.VISIBLE);
-        }
 
         if(hasFeaturePageUserManagement){
             cvUsuarios.setVisibility(View.VISIBLE);
@@ -63,19 +59,19 @@ public class MenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        cvSalir.setOnClickListener(new View.OnClickListener() {
+
+        cvKardex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TokensControl.removeTokens(getApplicationContext());
-                logOut();
+                Intent intent=new Intent(MenuActivity.this, WarehousesActivity.class);
+                startActivity(intent);
             }
         });
     }
 
     private void bindUI(){
         cvUsuarios = findViewById(R.id.cvUsuarios);
-        cvProductos = findViewById(R.id.cvGestionProductos);
-        cvSalir = findViewById(R.id.cvSalir);
+        cvKardex = findViewById(R.id.cvKardex);
     }
 
     private void logOut(){

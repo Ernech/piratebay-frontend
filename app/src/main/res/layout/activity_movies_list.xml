@@ -19,24 +19,27 @@
         android:text="La Paz"
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="15dp"
         android:textSize="18dp"/>
     <EditText
         android:id="@+id/etBuscar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Buscar"
-        android:drawableLeft="@drawable/searchicon"/>
+       />
     <Spinner
         android:id="@+id/spCategoria"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rvPeliculas">
+        android:id="@+id/rvProd"></androidx.recyclerview.widget.RecyclerView>
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+
 
 
 </LinearLayout>

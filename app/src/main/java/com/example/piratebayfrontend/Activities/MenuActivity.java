@@ -1,12 +1,16 @@
 package com.example.piratebayfrontend.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
+import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Clases.VerifyFeatures;
 import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.R;
@@ -59,8 +63,25 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void logOut(){
+        TokensControl.removeTokens(getApplicationContext());
         Intent intent = new Intent(MenuActivity.this,MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.context_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.cmLogOut:logOut();
+                return true;
+            default:
+                return false;
+        }
     }
 }

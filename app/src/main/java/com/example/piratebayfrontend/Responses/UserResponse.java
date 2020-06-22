@@ -1,33 +1,26 @@
-package com.example.piratebayfrontend.Controladores;
+package com.example.piratebayfrontend.Responses;
 
 import android.util.Log;
 
 import com.example.piratebayfrontend.Clases.MyApiAdapter;
-import com.example.piratebayfrontend.Interfaces.LoginCallBack;
 import com.example.piratebayfrontend.Interfaces.UserCallBack;
-import com.example.piratebayfrontend.Model.CredentialModel;
 import com.example.piratebayfrontend.Model.UserModel;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserController {
+public class UserResponse {
 
     String authToken;
 
-    public UserController (){
+    public UserResponse(){
 
     }
 
-    public UserController (String authToken){
+    public UserResponse(String authToken){
         this.authToken=authToken;
     }
 

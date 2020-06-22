@@ -12,13 +12,13 @@ import android.widget.Toast;
 
 import com.example.piratebayfrontend.Activities.MenuActivity;
 import com.example.piratebayfrontend.Clases.TokensControl;
-import com.example.piratebayfrontend.Controladores.LoginController;
+import com.example.piratebayfrontend.Responses.LoginResponse;
 import com.example.piratebayfrontend.Interfaces.LoginCallBack;
 import com.example.piratebayfrontend.Model.CredentialModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    LoginController loginController;
+    LoginResponse loginResponse;
     EditText etUserName,etPassword;
     Button btnEnter;
 
@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
                     CredentialModel credentialModel = new CredentialModel();
                     credentialModel.setUsername(etUserName.getText().toString().trim());
                     credentialModel.setPassword(etPassword.getText().toString().trim());
-                    loginController = new LoginController(credentialModel);
-                    loginController.sendToPostLogin(new LoginCallBack() {
+                    loginResponse = new LoginResponse(credentialModel);
+                    loginResponse.sendToPostLogin(new LoginCallBack() {
                         @Override
                         public void onSuccess(boolean value, Object authnToken, Object refreshToken) {
                             if(value && authnToken!=null && refreshToken!=null){

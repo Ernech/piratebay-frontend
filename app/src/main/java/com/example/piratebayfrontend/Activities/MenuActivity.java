@@ -3,29 +3,13 @@ package com.example.piratebayfrontend.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.piratebayfrontend.Clases.JWTUtils;
-import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Clases.VerifyFeatures;
-import com.example.piratebayfrontend.Controladores.RefreshTokenController;
-import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.MainActivity;
-import com.example.piratebayfrontend.Model.CredentialModel;
 import com.example.piratebayfrontend.R;
-
-import org.json.JSONArray;
-
-import java.text.Normalizer;
-import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
 

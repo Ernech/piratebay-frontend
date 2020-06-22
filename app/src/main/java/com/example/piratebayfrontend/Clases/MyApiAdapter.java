@@ -20,7 +20,7 @@ public class MyApiAdapter {
         httpClient.addInterceptor(logging);
 
         String baseUrlMariana =  "http://192.168.0.13:8008/api/v1/";
-        String baseUrlErnesto =  "http://192.168.0.102:8008/api/v1/";
+        String baseUrlErnesto =  "http://192.168.0.111:8008/api/v1/";
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()

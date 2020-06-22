@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.MoviesListActivity"></activity>
+        <activity android:name=".Activities.MoviesListActivity"/>
         <activity android:name=".Activities.WarehousesActivity" />
         <activity android:name=".Activities.UsersListActivity" />
         <activity android:name=".Activities.FormActivity" />

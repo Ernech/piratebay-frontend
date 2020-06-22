@@ -2,20 +2,17 @@ package com.example.piratebayfrontend.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.UserManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import com.example.piratebayfrontend.Clases.Tabla;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Clases.VerifyFeatures;
-import com.example.piratebayfrontend.Controladores.RefreshTokenController;
-import com.example.piratebayfrontend.Controladores.UserController;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
+import com.example.piratebayfrontend.Responses.UserResponse;
 import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.Interfaces.UserCallBack;
 import com.example.piratebayfrontend.MainActivity;
@@ -29,7 +26,7 @@ public class UsersListActivity extends AppCompatActivity {
 
     Tabla tabla;
     Button btnRefresh;
-    RefreshTokenController refreshTokenController;
+    RefreshTokenResponse refreshTokenController;
     Map<String, String> tokens;
     boolean authnTokenExpired;
     boolean hasFeatureButtonDeleteUSer;
@@ -81,8 +78,8 @@ public class UsersListActivity extends AppCompatActivity {
         }
     }
     private void listUsers(){
-        UserController userController= new UserController(tokens.get("authentication"));
-        userController.getUsersList(new UserCallBack() {
+        UserResponse userResponse = new UserResponse(tokens.get("authentication"));
+        userResponse.getUsersList(new UserCallBack() {
             @Override
             public void onSuccess(boolean value, ArrayList<UserModel> usersList) {
                 if(value && usersList!=null){
@@ -94,8 +91,8 @@ public class UsersListActivity extends AppCompatActivity {
         });
     }
     private void refreshListUsers(){
-        UserController userController= new UserController(tokens.get("authentication"));
-        userController.getUsersList(new UserCallBack() {
+        UserResponse userResponse = new UserResponse(tokens.get("authentication"));
+        userResponse.getUsersList(new UserCallBack() {
             @Override
             public void onSuccess(boolean value, ArrayList<UserModel> usersList) {
                 if(value && usersList!=null){
@@ -109,7 +106,7 @@ public class UsersListActivity extends AppCompatActivity {
         });
     }
     private void refreshTokens(){
-        refreshTokenController = new RefreshTokenController(tokens.get("refresh"));
+        refreshTokenController = new RefreshTokenResponse(tokens.get("refresh"));
         refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
             @Override
             public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {

@@ -1,10 +1,11 @@
-package com.example.piratebayfrontend.Controladores;
+package com.example.piratebayfrontend.Responses;
 
 import android.util.Log;
 
 import com.example.piratebayfrontend.Clases.MyApiAdapter;
 import com.example.piratebayfrontend.Interfaces.LoginCallBack;
-import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
+import com.example.piratebayfrontend.Model.CredentialModel;
+import com.example.piratebayfrontend.Utilities.Utilities;
 
 import org.json.JSONObject;
 
@@ -16,36 +17,37 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RefreshTokenController implements Callback<Map<String, Object>> {
-    Object refreshToken;
+public class LoginResponse {
 
-    public RefreshTokenController() {
+    CredentialModel credentialModel;
+    public LoginResponse(CredentialModel credentialModel){
+        this.credentialModel=credentialModel;
     }
 
-    public RefreshTokenController(Object refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void sendToPostRefreshToken(final RefreshTokenCallBack callBack){
+    public void sendToPostLogin(final LoginCallBack callBack){
         //Mapa para pasar los campos del formulario
         Map<String, Object> jsonParams = new HashMap<>();
+
         //Colocar los datos en el mapa
-        jsonParams.put("refreshModel",refreshToken);
+        jsonParams.put("username",credentialModel.getUsername());
+        jsonParams.put("password",credentialModel.getPassword());
+
         //Pasar los datos del mapa en formato JSON
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
-        Call<Map<String,Object>> call = MyApiAdapter.getApiService().getNewTokens(body);
+
+        Call<Map<String,Object>> call = MyApiAdapter.getApiService().getLogin(body);
         call.enqueue(new Callback<Map<String, Object>>() {
             @Override
             public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                 if(response.isSuccessful()) {
-                    Map<String, Object> postRefreshTokenResponse = response.body();
-                    Log.d("onResponse", postRefreshTokenResponse + "");
+                    Map<String, Object> postLoginResponse = response.body();
+                    Log.d("onResponse", postLoginResponse + "");
                     if (response.code() == 200) {
-                        callBack.onSuccess(true,postRefreshTokenResponse.get("authentication"),postRefreshTokenResponse.get("refresh"));
+                        callBack.onSuccess(true, postLoginResponse.get(Utilities.AUTHENTICATION_TOKEN), postLoginResponse.get(Utilities.REFRESH_TOKEN));
                     }
                 } else {
-                    if (response.code() == 500) {
+                    if (response.code() == 403) {
                         callBack.onSuccess(false,null,null);
                     }
                 }
@@ -56,15 +58,5 @@ public class RefreshTokenController implements Callback<Map<String, Object>> {
 
             }
         });
-    }
-
-    @Override
-    public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
-
-    }
-
-    @Override
-    public void onFailure(Call<Map<String, Object>> call, Throwable t) {
-
     }
 }

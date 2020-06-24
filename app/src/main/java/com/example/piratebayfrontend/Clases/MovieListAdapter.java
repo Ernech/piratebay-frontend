@@ -34,11 +34,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderDatos holder, int position) {
-        holder.txTitle.setText("Título: "+movieList.get(position).getTitle());
-        holder.txIDAndFormat.setText("Código película: "+movieList.get(position).getIdMovie() +" | Formato: "+movieList.get(position).getFormat());
-        holder.txSupplier.setText( "Proveedor: "+movieList.get(position).getSupplier());
+        holder.txTitle.setText("Título: "+movieList.get(position).getProductName());
+        holder.txIDAndFormat.setText("Código película: "+movieList.get(position).getProductCode() +" | Formato: "+movieList.get(position).getFormat());
+        holder.txSupplier.setText( "Proveedor: "+movieList.get(position).getProviderName());
         holder.txDate.setText("Fecha de creación: "+movieList.get(position).getCreationDate());
-        holder.txQuantity.setText(movieList.get(position).getQuantity()+"");
+        holder.txQuantity.setText(movieList.get(position).getQttyReceived()+"");
     }
 
     @Override

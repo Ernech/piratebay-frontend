@@ -1,6 +1,7 @@
 package com.example.piratebayfrontend.Interfaces;
 
 import com.example.piratebayfrontend.Model.CredentialModel;
+import com.example.piratebayfrontend.Model.MovieModel;
 import com.example.piratebayfrontend.Model.UserModel;
 
 import java.util.ArrayList;
@@ -35,4 +36,11 @@ public interface MyApiService {
     @Headers({"Accept: application/json"})
     @GET("user")
     Call<ArrayList<UserModel>> getUsers (@Header("Authorization") String authToken);
+
+    // Obtener lista de películas por almacen
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("movies")
+    Call<ArrayList<MovieModel>> getMovies (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+
 }

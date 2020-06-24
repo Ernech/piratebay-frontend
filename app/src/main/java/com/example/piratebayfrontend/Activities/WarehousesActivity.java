@@ -13,9 +13,14 @@ import android.view.View;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.R;
+import com.example.piratebayfrontend.Utilities.Utilities;
 
 public class WarehousesActivity extends AppCompatActivity {
     CardView cvWareHouseLaPaz;
+    CardView cvWareHouseSantaCruz;
+    CardView cvWareHouseCochabamba;
+    CardView cvWareHouseTarija;
+    CardView cvWareHouseSucre;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,39 @@ public class WarehousesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
+                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_LA_PAZ);
+                startActivity(intent);
+            }
+        });
+        cvWareHouseSantaCruz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
+                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_SANTA_CRUZ);
+                startActivity(intent);
+            }
+        });
+        cvWareHouseCochabamba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
+                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_COCHABAMBA);
+                startActivity(intent);
+            }
+        });
+        cvWareHouseTarija.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
+                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_TARIJA);
+                startActivity(intent);
+            }
+        });
+        cvWareHouseSucre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
+                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_SUCRE);
                 startActivity(intent);
             }
         });
@@ -33,6 +71,10 @@ public class WarehousesActivity extends AppCompatActivity {
 
     private void bindUI(){
         cvWareHouseLaPaz = findViewById(R.id.cvAlmacenLP);
+        cvWareHouseSantaCruz = findViewById(R.id.cvAlmacenSC);
+        cvWareHouseCochabamba = findViewById(R.id.cvAlmacenCB);
+        cvWareHouseTarija = findViewById(R.id.cvAlmacenTJ);
+        cvWareHouseSucre = findViewById(R.id.cvAlmacenSU);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

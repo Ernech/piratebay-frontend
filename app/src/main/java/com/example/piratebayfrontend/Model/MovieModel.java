@@ -1,40 +1,53 @@
 package com.example.piratebayfrontend.Model;
 
 
-public class MovieModel {
-    int idMovie;
-    String title;
-    String format;
-    String creationDate;
-    String supplier;
-    int quantity;
+import java.sql.Date;
 
-    public MovieModel(int idMovie, String title, String format, String creationDate, String supplier, int quantity) {
-        this.idMovie = idMovie;
-        this.title = title;
-        this.format = format;
-        this.creationDate = creationDate;
-        this.supplier = supplier;
-        this.quantity = quantity;
-    }
+public class MovieModel {
+
+    private int productId;
+    private String productCode;
+    private String productName;
+    private String format;
+    private java.sql.Date creationDate;
+    private String providerName;
+    private int qttyReceived;
 
     public MovieModel() {
     }
 
-    public int getIdMovie() {
-        return idMovie;
+    public MovieModel(int productId, String productCode, String productName, String format, Date creationDate, String providerName, int qttyReceived) {
+        this.productId = productId;
+        this.productCode = productCode;
+        this.productName = productName;
+        this.format = format;
+        this.creationDate = creationDate;
+        this.providerName = providerName;
+        this.qttyReceived = qttyReceived;
     }
 
-    public void setIdMovie(int idMovie) {
-        this.idMovie = idMovie;
+    public int getProductId() {
+        return productId;
     }
 
-    public String getTitle() {
-        return title;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getFormat() {
@@ -45,27 +58,27 @@ public class MovieModel {
         this.format = format;
     }
 
-    public String getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(String creationDate) {
+    public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public String getSupplier() {
-        return supplier;
+    public String getProviderName() {
+        return providerName;
     }
 
-    public void setSupplier(String supplier) {
-        this.supplier = supplier;
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQttyReceived() {
+        return qttyReceived;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQttyReceived(int qttyReceived) {
+        this.qttyReceived = qttyReceived;
     }
 }

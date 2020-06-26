@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,6 +38,7 @@ public class MoviesListActivity extends AppCompatActivity {
     ArrayList<MovieModel> movieList;
     String warehouseName;
     Map<String, String> tokens;
+    int indexSpinner=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +50,19 @@ public class MoviesListActivity extends AppCompatActivity {
         getMovies();
         ArrayAdapter<CharSequence> spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,Utilities.searchOptions());
         spSearchOptions.setAdapter(spinnerAdapter);
+        spSearchOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(indexSpinner>0){
+                    Toast.makeText(getApplicationContext(),"Item "+ Utilities.searchOptions().get(i), Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

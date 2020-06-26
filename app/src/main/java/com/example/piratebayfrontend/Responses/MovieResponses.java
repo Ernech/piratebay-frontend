@@ -5,7 +5,6 @@ import android.util.Log;
 import com.example.piratebayfrontend.Clases.MyApiAdapter;
 import com.example.piratebayfrontend.Interfaces.MoviesCallBack;
 import com.example.piratebayfrontend.Model.MovieModel;
-import com.example.piratebayfrontend.Model.UserModel;
 
 import org.json.JSONObject;
 

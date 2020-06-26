@@ -37,7 +37,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.txTitle.setText("Título: "+movieList.get(position).getProductName());
         holder.txIDAndFormat.setText("Código película: "+movieList.get(position).getProductCode() +" | Formato: "+movieList.get(position).getFormat());
         holder.txSupplier.setText( "Proveedor: "+movieList.get(position).getProviderName());
-        holder.txDate.setText("Fecha de creación: "+movieList.get(position).getCreationDate());
+        holder.txDate.setText("Fecha de creación: "+changeDateFormat(movieList.get(position).getCreationDate()));
         holder.txQuantity.setText(movieList.get(position).getQttyReceived()+"");
     }
 
@@ -74,5 +74,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             txQuantity = (TextView) itemView.findViewById(R.id.tvQuantity);
 
         }
+    }
+    private String changeDateFormat(String date){
+        String [] aux = date.split("-");
+        return aux[2]+"-"+aux[1]+"-"+aux[0];
     }
 }

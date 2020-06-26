@@ -9,14 +9,14 @@ public class MovieModel {
     private String productCode;
     private String productName;
     private String format;
-    private java.sql.Date creationDate;
+    private String creationDate;
     private String providerName;
     private int qttyReceived;
 
     public MovieModel() {
     }
 
-    public MovieModel(int productId, String productCode, String productName, String format, Date creationDate, String providerName, int qttyReceived) {
+    public MovieModel(int productId, String productCode, String productName, String format, String creationDate, String providerName, int qttyReceived) {
         this.productId = productId;
         this.productCode = productCode;
         this.productName = productName;
@@ -58,11 +58,11 @@ public class MovieModel {
         this.format = format;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 

@@ -54,7 +54,37 @@ public class MovieResponses {
 
             @Override
             public void onFailure(Call<ArrayList<MovieModel>> call, Throwable t) {
+                Log.d("onMoviesResponse", "Error "+t);
+            }
+        });
+    }
+    public void getMoviesListByWarehouseAndName(String name,final MoviesCallBack callBack){
+        Map<String, Object> jsonParams = new HashMap<>();
+        jsonParams.put("warehouse",warehouseName);
+        jsonParams.put("searchParameter",name);
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
+                (new JSONObject(jsonParams)).toString());
+        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByParameter("bearer "+authToken,body);
+        call.enqueue(new Callback<ArrayList<MovieModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MovieModel>> call, Response<ArrayList<MovieModel>> response) {
+                if(response.isSuccessful()) {
+                    ArrayList<MovieModel> getMoviesResponse = response.body();
+                    Log.d("onMoviesResponseP", getMoviesResponse + "");
+                    if (response.code() == 200) {
+                        callBack.onSuccess(true, getMoviesResponse);
+                    }
+                } else {
+                    if (response.code() == 500) {
+                        Log.d("onMoviesResponseP", "Error");
+                        callBack.onSuccess(false,null);
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ArrayList<MovieModel>> call, Throwable t) {
+                Log.d("onMoviesResponse", "Error "+t);
             }
         });
     }

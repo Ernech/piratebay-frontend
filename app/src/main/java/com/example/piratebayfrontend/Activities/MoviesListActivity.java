@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,16 +46,30 @@ public class MoviesListActivity extends AppCompatActivity {
         warehouseName = bundle.getString(Utilities.WAREHOUSE);
         bindUI();
         getMovies();
-        System.out.println("movies received "+movieList);
-
         ArrayAdapter<CharSequence> spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,Utilities.searchOptions());
         spSearchOptions.setAdapter(spinnerAdapter);
-       /* movieListAdapter.setOnClickListener(new View.OnClickListener() {
+        etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "ID movie: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId(), Toast.LENGTH_SHORT).show();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
-        });*/
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if("".equals(etSearch.getText().toString().trim())){
+                        getMovies();
+                    }
+                    else{
+                       // Toast.makeText(getApplicationContext(),etSearch.getText().toString().trim(),Toast.LENGTH_SHORT).show();
+                        getMoviesByParameter(etSearch.getText().toString().trim());
+                    }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 
 
@@ -98,15 +114,37 @@ public class MoviesListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {
                 if(value && moviesList!=null){
-                    System.out.println("movies received");
-                    movieList=moviesList;
-                    rvMovieList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    movieListAdapter = new MovieListAdapter(movieList,getApplicationContext());
-                    rvMovieList.setAdapter(movieListAdapter);
+                    setMovieListAdapter(moviesList);
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+    private void getMoviesByParameter(String movieName){
+        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseName);
+        movieResponses.getMoviesListByWarehouseAndName(movieName,new MoviesCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {
+                if(value && moviesList!=null){
+                    setMovieListAdapter(moviesList);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void setMovieListAdapter(ArrayList<MovieModel> moviesList){
+        movieList=moviesList;
+        rvMovieList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        movieListAdapter = new MovieListAdapter(movieList,getApplicationContext());
+        rvMovieList.setAdapter(movieListAdapter);
+        movieListAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "ID movie: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId(), Toast.LENGTH_SHORT).show();
             }
         });
     }

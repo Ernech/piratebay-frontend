@@ -47,4 +47,9 @@ public interface MyApiService {
             "Accept: application/json"})
     @POST("movies/search")
     Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    //Ordenar películas por parámetro
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("movies/order")
+    Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
 }

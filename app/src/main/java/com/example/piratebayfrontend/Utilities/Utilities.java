@@ -25,4 +25,11 @@ public class Utilities {
     public static String WAREHOUSE_COCHABAMBA = "Cochabamba";
     public static String WAREHOUSE_TARIJA="Tarija";
     public static String WAREHOUSE_SUCRE="Sucre";
+
+
+    public static String PRODUCT_NAME="product_name";
+    public static String PROVIDER_NAME="provider_name";
+    public static String FORMAT = "FORMAT";
+    public static String CREATION_DATE="created_date";
+    public static String QTYY_RECEIVED = "qtty_received";
 }

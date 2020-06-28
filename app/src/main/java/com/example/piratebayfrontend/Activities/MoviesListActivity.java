@@ -53,9 +53,29 @@ public class MoviesListActivity extends AppCompatActivity {
         spSearchOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(indexSpinner>0){
-                    Toast.makeText(getApplicationContext(),"Item "+ Utilities.searchOptions().get(i), Toast.LENGTH_SHORT);
+
+                if("".equals(etSearch.getText().toString().trim())){
+                   if(i==0){
+                       getMovies();
+                   }
+                   else if("Título".equals(Utilities.searchOptions().get(i))){
+                       sortMoviesByParameter(Utilities.PRODUCT_NAME);
+                   }
+                   else if("Formato".equals(Utilities.searchOptions().get(i))){
+                       sortMoviesByParameter(Utilities.FORMAT);
+                   }
+                   else if("Fecha de creación".equals(Utilities.searchOptions().get(i))){
+                       sortMoviesByParameter(Utilities.CREATION_DATE);
+                   }
+                   else if("Proveedor".equals(Utilities.searchOptions().get(i))){
+                       sortMoviesByParameter(Utilities.PROVIDER_NAME);
+                   }
+                   else if("Cantidad".equals(Utilities.searchOptions().get(i))){
+                       sortMoviesByParameter(Utilities.QTYY_RECEIVED);
+                   }
                 }
+
+
             }
 
             @Override
@@ -75,7 +95,6 @@ public class MoviesListActivity extends AppCompatActivity {
                         getMovies();
                     }
                     else{
-                       // Toast.makeText(getApplicationContext(),etSearch.getText().toString().trim(),Toast.LENGTH_SHORT).show();
                         getMoviesByParameter(etSearch.getText().toString().trim());
                     }
             }
@@ -160,7 +179,24 @@ public class MoviesListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "ID movie: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MoviesListActivity.this,KardexActivity.class);
+                startActivity(intent);
             }
         });
+    }
+    private void sortMoviesByParameter(String parameter){
+        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseName);
+        movieResponses.sortMoviesListByWarehouseAndParameter(parameter, new MoviesCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {
+                if(value && moviesList!=null){
+                    setMovieListAdapter(moviesList);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

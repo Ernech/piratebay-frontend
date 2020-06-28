@@ -1,7 +1,5 @@
 package com.example.piratebayfrontend.Utilities;
 
-import com.example.piratebayfrontend.Model.MovieModel;
-
 import java.util.ArrayList;
 
 public class Utilities {
@@ -9,9 +7,8 @@ public class Utilities {
         ArrayList<String> searchOptionsMovieList=new ArrayList<>();
         searchOptionsMovieList.add("Ordenar por");
         searchOptionsMovieList.add("Título");
-        searchOptionsMovieList.add("Formato");
+        searchOptionsMovieList.add("Código");
         searchOptionsMovieList.add("Fecha de creación");
-        searchOptionsMovieList.add("Proveedor");
         searchOptionsMovieList.add("Cantidad");
         return searchOptionsMovieList;
     }
@@ -23,8 +20,7 @@ public class Utilities {
 
 
     public static String PRODUCT_NAME="product_name";
-    public static String PROVIDER_NAME="provider_name";
-    public static String FORMAT = "FORMAT";
-    public static String CREATION_DATE="created_date";
-    public static String QTYY_RECEIVED = "qtty_received";
+    public static String PRODUCT_CODE="product_code";
+    public static String CREATION_DATE="creation_date";
+    public static String QTTY_RECEIVED = "qtty_received";
 }

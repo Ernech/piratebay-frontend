@@ -1,6 +1,5 @@
 package com.example.piratebayfrontend.Interfaces;
 
-import com.example.piratebayfrontend.Model.CredentialModel;
 import com.example.piratebayfrontend.Model.KardexModel;
 import com.example.piratebayfrontend.Model.MovieModel;
 import com.example.piratebayfrontend.Model.UserModel;
@@ -55,8 +54,13 @@ public interface MyApiService {
     //Ordenar películas por parámetro
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("movies/order")
+    @POST("movies/sort")
     Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    //Obtener películas por nombre ordenadas por parámetro
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("movies/search/sort")
+    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})

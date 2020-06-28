@@ -60,7 +60,7 @@ public class MovieResponses {
     public void getMoviesListByWarehouseAndName(String name,final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
         jsonParams.put("warehouseId",warehouseId);
-        jsonParams.put("parameter",name);
+        jsonParams.put("searchParameter",name);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
         Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByParameter("bearer "+authToken,body);
@@ -90,7 +90,7 @@ public class MovieResponses {
     public void sortMoviesListByWarehouseAndParameter(String parameter,final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
         jsonParams.put("warehouseId",warehouseId);
-        jsonParams.put("parameter",parameter);
+        jsonParams.put("sortParameter",parameter);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
         Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesOrderedByParameter("bearer "+authToken,body);
@@ -106,6 +106,37 @@ public class MovieResponses {
                 } else {
                     if (response.code() == 500) {
                         Log.d("onSortResponseP", "Error");
+                        callBack.onSuccess(false,null);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MovieModel>> call, Throwable t) {
+                Log.d("onSortResponse", "Error "+t);
+            }
+        });
+    }
+    public void getMoviesByNameSortedByParameter(String name, String parameter, final MoviesCallBack callBack){
+        Map<String, Object> jsonParams = new HashMap<>();
+        jsonParams.put("warehouseId",warehouseId);
+        jsonParams.put("searchParameter",name);
+        jsonParams.put("sortParameter",parameter);
+        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
+                (new JSONObject(jsonParams)).toString());
+        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByNameSortedByParameter("bearer "+authToken,body);
+        call.enqueue(new Callback<ArrayList<MovieModel>>() {
+            @Override
+            public void onResponse(Call<ArrayList<MovieModel>> call, Response<ArrayList<MovieModel>> response) {
+                if(response.isSuccessful()) {
+                    ArrayList<MovieModel> getMoviesResponse = response.body();
+                    Log.d("onSortNameResponseP", getMoviesResponse + "");
+                    if (response.code() == 200) {
+                        callBack.onSuccess(true, getMoviesResponse);
+                    }
+                } else {
+                    if (response.code() == 500) {
+                        Log.d("onSortNameResponseP", "Error");
                         callBack.onSuccess(false,null);
                     }
                 }

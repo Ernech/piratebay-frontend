@@ -38,7 +38,7 @@ public class MoviesListActivity extends AppCompatActivity {
     ArrayList<MovieModel> movieList;
     int warehouseId;
     Map<String, String> tokens;
-    int indexSpinner=-1;
+    String sortParameter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,29 +53,22 @@ public class MoviesListActivity extends AppCompatActivity {
         spSearchOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if("".equals(etSearch.getText().toString().trim())){
                    if(i==0){
-                       getMovies();
+                       sortParameter ="";
                    }
                    else if("Título".equals(Utilities.searchOptions().get(i))){
-                       sortMoviesByParameter(Utilities.PRODUCT_NAME);
+                       sortParameter =Utilities.PRODUCT_NAME;
                    }
-                   else if("Formato".equals(Utilities.searchOptions().get(i))){
-                       sortMoviesByParameter(Utilities.FORMAT);
+                   else if("Código".equals(Utilities.searchOptions().get(i))){
+                       sortParameter=Utilities.PRODUCT_CODE;
                    }
                    else if("Fecha de creación".equals(Utilities.searchOptions().get(i))){
-                       sortMoviesByParameter(Utilities.CREATION_DATE);
-                   }
-                   else if("Proveedor".equals(Utilities.searchOptions().get(i))){
-                       sortMoviesByParameter(Utilities.PROVIDER_NAME);
+                       sortParameter =Utilities.CREATION_DATE;
                    }
                    else if("Cantidad".equals(Utilities.searchOptions().get(i))){
-                       sortMoviesByParameter(Utilities.QTYY_RECEIVED);
+                       sortParameter = Utilities.QTTY_RECEIVED;
                    }
-                }
-
-
+                     getMoviesFromWarehouse();
             }
 
             @Override
@@ -91,12 +84,7 @@ public class MoviesListActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if("".equals(etSearch.getText().toString().trim())){
-                        getMovies();
-                    }
-                    else{
-                        getMoviesByParameter(etSearch.getText().toString().trim());
-                    }
+                   getMoviesFromWarehouse();
             }
 
             @Override
@@ -156,7 +144,7 @@ public class MoviesListActivity extends AppCompatActivity {
             }
         });
     }
-    private void getMoviesByParameter(String movieName){
+    private void getMoviesByName(String movieName){
         MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.getMoviesListByWarehouseAndName(movieName,new MoviesCallBack() {
             @Override
@@ -201,5 +189,34 @@ public class MoviesListActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void searchMoviesAndSortByParameter(String title, String parameter){
+        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
+        movieResponses.getMoviesByNameSortedByParameter(title, parameter, new MoviesCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {
+                if(value && moviesList!=null){
+                    setMovieListAdapter(moviesList);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getMoviesFromWarehouse(){
+        if("".equals(etSearch.getText().toString().trim()) && "".equals(sortParameter)){
+            getMovies();
+        }
+        else if(!"".equals(etSearch.getText().toString().trim()) && "".equals(sortParameter)){
+            getMoviesByName(etSearch.getText().toString().trim());
+        }
+        else if(!"".equals(etSearch.getText().toString().trim()) && !"".equals(sortParameter)){
+            searchMoviesAndSortByParameter(etSearch.getText().toString().trim(),sortParameter);
+        }
+        else if("".equals(etSearch.getText().toString().trim()) && !"".equals(sortParameter)){
+            sortMoviesByParameter(sortParameter);
+        }
     }
 }

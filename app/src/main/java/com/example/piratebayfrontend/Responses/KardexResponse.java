@@ -68,7 +68,7 @@ public class KardexResponse {
     public void fillKardex(ArrayList<KardexModel> kardexElements, Tabla tabla){
         for(int i=0; i<kardexElements.size(); i++){
             ArrayList<String> kardexElement = new ArrayList<String>();
-            kardexElement.add(kardexElements.get(i).getDateReceived());
+            kardexElement.add(changeDateFormat(kardexElements.get(i).getDateReceived()));
             kardexElement.add(kardexElements.get(i).getConcept());
             kardexElement.add(kardexElements.get(i).getReceipt());
             kardexElement.add(kardexElements.get(i).getUnitValue().toString());
@@ -78,5 +78,9 @@ public class KardexResponse {
             kardexElement.add(kardexElements.get(i).getBalanceValue().toString());
             tabla.agregarFilaTabla(kardexElement);
         }
+    }
+    private String changeDateFormat(String date){
+        String [] aux = date.split("-");
+        return aux[2]+"-"+aux[1]+"-"+aux[0];
     }
 }

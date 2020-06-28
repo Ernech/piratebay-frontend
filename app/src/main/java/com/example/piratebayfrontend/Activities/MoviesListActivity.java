@@ -36,7 +36,7 @@ public class MoviesListActivity extends AppCompatActivity {
     Spinner spSearchOptions;
     MovieListAdapter movieListAdapter;
     ArrayList<MovieModel> movieList;
-    String warehouseName;
+    int warehouseId;
     Map<String, String> tokens;
     int indexSpinner=-1;
     @Override
@@ -45,7 +45,7 @@ public class MoviesListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movies_list);
         tokens = TokensControl.retrieveTokens(getApplicationContext());
         Bundle bundle = getIntent().getExtras();
-        warehouseName = bundle.getString(Utilities.WAREHOUSE);
+        warehouseId = bundle.getInt(Utilities.WAREHOUSE);
         bindUI();
         getMovies();
         ArrayAdapter<CharSequence> spinnerAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,Utilities.searchOptions());
@@ -143,7 +143,7 @@ public class MoviesListActivity extends AppCompatActivity {
     }
 
     private void getMovies(){
-        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseName);
+        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.getMoviesListByWarehouse(new MoviesCallBack() {
             @Override
             public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {
@@ -157,7 +157,7 @@ public class MoviesListActivity extends AppCompatActivity {
         });
     }
     private void getMoviesByParameter(String movieName){
-        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseName);
+        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.getMoviesListByWarehouseAndName(movieName,new MoviesCallBack() {
             @Override
             public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {
@@ -182,13 +182,13 @@ public class MoviesListActivity extends AppCompatActivity {
                         "Proveedor: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProviderName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MoviesListActivity.this,KardexActivity.class);
                 intent.putExtra("idMovie",movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId());
-                intent.putExtra("warehouseName",warehouseName);
+                intent.putExtra("warehouseId",warehouseId);
                 startActivity(intent);
             }
         });
     }
     private void sortMoviesByParameter(String parameter){
-        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseName);
+        MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.sortMoviesListByWarehouseAndParameter(parameter, new MoviesCallBack() {
             @Override
             public void onSuccess(boolean value, ArrayList<MovieModel> moviesList) {

@@ -4,6 +4,7 @@ import com.example.piratebayfrontend.Model.CredentialModel;
 import com.example.piratebayfrontend.Model.KardexModel;
 import com.example.piratebayfrontend.Model.MovieModel;
 import com.example.piratebayfrontend.Model.UserModel;
+import com.example.piratebayfrontend.Model.WarehouseModel;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -37,12 +38,15 @@ public interface MyApiService {
     @Headers({"Accept: application/json"})
     @GET("user")
     Call<ArrayList<UserModel>> getUsers (@Header("Authorization") String authToken);
-
     // Obtener lista de películas por almacen
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("movies")
     Call<ArrayList<MovieModel>> getMovies (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    //Obtener Almacenes
+    @Headers({"Accept: application/json"})
+    @GET("warehouse")
+    Call<ArrayList<WarehouseModel>> getAllWareHouses (@Header("Authorization") String authToken);
     // Obtener lista de películas por almacen y nombre
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})

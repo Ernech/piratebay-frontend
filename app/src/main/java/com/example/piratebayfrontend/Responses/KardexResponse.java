@@ -22,22 +22,22 @@ import retrofit2.Response;
 public class KardexResponse {
 
     String authToken;
-    String warehouseName;
+    int warehouseId;
     int idMovie;
 
     public KardexResponse(){
 
     }
 
-    public KardexResponse(String authToken, String warehouseName, int idMovie) {
+    public KardexResponse(String authToken, int warehouseId, int idMovie) {
         this.authToken = authToken;
-        this.warehouseName = warehouseName;
+        this.warehouseId = warehouseId;
         this.idMovie = idMovie;
     }
 
     public void getKardexElements(final KardexCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouse",warehouseName);
+        jsonParams.put("warehouseId",warehouseId);
         jsonParams.put("parameter",idMovie);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());

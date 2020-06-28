@@ -19,18 +19,18 @@ import retrofit2.Response;
 
 public class MovieResponses {
     String authToken;
-    String warehouseName;
+   int warehouseId;
 
     public MovieResponses() {
     }
 
-    public MovieResponses(String authToken,String warehouseName) {
+    public MovieResponses(String authToken,int warehouseId) {
         this.authToken = authToken;
-        this.warehouseName = warehouseName;
+        this.warehouseId = warehouseId;
     }
     public void getMoviesListByWarehouse(final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouseName",warehouseName);
+        jsonParams.put("warehouseId",warehouseId);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
         Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMovies("bearer "+authToken,body);
@@ -59,7 +59,7 @@ public class MovieResponses {
     }
     public void getMoviesListByWarehouseAndName(String name,final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouse",warehouseName);
+        jsonParams.put("warehouseId",warehouseId);
         jsonParams.put("parameter",name);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
@@ -89,7 +89,7 @@ public class MovieResponses {
     }
     public void sortMoviesListByWarehouseAndParameter(String parameter,final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouse",warehouseName);
+        jsonParams.put("warehouseId",warehouseId);
         jsonParams.put("parameter",parameter);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());

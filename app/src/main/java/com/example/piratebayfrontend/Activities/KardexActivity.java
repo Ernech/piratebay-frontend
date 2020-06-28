@@ -16,7 +16,7 @@ public class KardexActivity extends AppCompatActivity {
 
     ProductInfoFragment productInfoFragment;
     KardexFragment kardexFragment;
-    String warehouse;
+    int warehouse;
     int idMovie;
     Bundle bundle;
     Bundle args;
@@ -28,10 +28,10 @@ public class KardexActivity extends AppCompatActivity {
         bindUI();
         bundle = getIntent().getExtras();
         idMovie = bundle.getInt("idMovie");
-        warehouse = bundle.getString("warehouseName");
+        warehouse = bundle.getInt("warehouseId");
         args = new Bundle();
         args.putInt("movieID",idMovie);
-        args.putString("wh",warehouse);
+        args.putInt("wh",warehouse);
         productInfoFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,productInfoFragment).commit();
 

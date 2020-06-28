@@ -2,79 +2,47 @@ package com.example.piratebayfrontend.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
 
 import com.example.piratebayfrontend.Clases.TokensControl;
+import com.example.piratebayfrontend.Clases.WarehouseAdapter;
+import com.example.piratebayfrontend.Interfaces.WarehouseCallBack;
 import com.example.piratebayfrontend.MainActivity;
+import com.example.piratebayfrontend.Model.WarehouseModel;
 import com.example.piratebayfrontend.R;
+import com.example.piratebayfrontend.Responses.WarehouseResponse;
 import com.example.piratebayfrontend.Utilities.Utilities;
 
-public class WarehousesActivity extends AppCompatActivity {
-    CardView cvWareHouseLaPaz;
-    CardView cvWareHouseSantaCruz;
-    CardView cvWareHouseCochabamba;
-    CardView cvWareHouseTarija;
-    CardView cvWareHouseSucre;
+import java.util.ArrayList;
+import java.util.Map;
 
+public class WarehousesActivity extends AppCompatActivity {
+    RecyclerView rvWarehouses;
+    Map<String,String> tokens;
+    ArrayList<WarehouseModel> warehouses;
+    WarehouseAdapter warehouseAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_warehouses);
+        tokens = TokensControl.retrieveTokens(getApplicationContext());
         bindUI();
-        cvWareHouseLaPaz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
-                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_LA_PAZ);
-                startActivity(intent);
-            }
-        });
-        cvWareHouseSantaCruz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
-                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_SANTA_CRUZ);
-                startActivity(intent);
-            }
-        });
-        cvWareHouseCochabamba.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
-                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_COCHABAMBA);
-                startActivity(intent);
-            }
-        });
-        cvWareHouseTarija.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
-                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_TARIJA);
-                startActivity(intent);
-            }
-        });
-        cvWareHouseSucre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
-                intent.putExtra(Utilities.WAREHOUSE,Utilities.WAREHOUSE_SUCRE);
-                startActivity(intent);
-            }
-        });
+        getWarehouses();
+
     }
 
     private void bindUI(){
-        cvWareHouseLaPaz = findViewById(R.id.cvAlmacenLP);
-        cvWareHouseSantaCruz = findViewById(R.id.cvAlmacenSC);
-        cvWareHouseCochabamba = findViewById(R.id.cvAlmacenCB);
-        cvWareHouseTarija = findViewById(R.id.cvAlmacenTJ);
-        cvWareHouseSucre = findViewById(R.id.cvAlmacenSU);
+      rvWarehouses = findViewById(R.id.rvWarehouses);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,5 +70,31 @@ public class WarehousesActivity extends AppCompatActivity {
     private void returnMenu(){
         Intent intent = new Intent(WarehousesActivity.this, MenuActivity.class);
         startActivity(intent);
+    }
+
+    private void getWarehouses(){
+        WarehouseResponse warehouseResponse = new WarehouseResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN));
+        warehouseResponse.getWarehouses(new WarehouseCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<WarehouseModel> warehouseList) {
+                if (value && warehouseList!=null){
+                    setWarehouseAdapter(warehouseList);
+                }
+            }
+        });
+    }
+    private void setWarehouseAdapter(final ArrayList<WarehouseModel> warehouseList){
+        warehouses = warehouseList;
+        rvWarehouses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        warehouseAdapter = new WarehouseAdapter(getApplicationContext(),warehouseList);
+        rvWarehouses.setAdapter(warehouseAdapter);
+        warehouseAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
+                intent.putExtra(Utilities.WAREHOUSE,warehouseList.get(rvWarehouses.getChildAdapterPosition(view)).getWarehouseId());
+                startActivity(intent);
+            }
+        });
     }
 }

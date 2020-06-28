@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.KardexFragment">
+    tools:context=".Fragments.KardexFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Kardex" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kardex de inventario"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textSize="25dp"
+        android:layout_marginBottom="15dp"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        android:id="@+id/scrollVerticalKardex"
+        android:layout_weight="1">
 
-</FrameLayout>
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollHorizonalKardex"
+            android:scrollbars="horizontal"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layoutTablaKardex">
+                </TableLayout>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </ScrollView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnEntry"
+        android:text="Registrar entrada"/>
+
+</LinearLayout>

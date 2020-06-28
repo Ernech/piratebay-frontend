@@ -16,4 +16,14 @@
         <item>Editar</item>
         <item>Eliminar</item>
     </string-array>
+    <string-array name="cabecera_kardex">
+        <item>Fecha</item>
+        <item>Concepto</item>
+        <item>Factura</item>
+        <item>Valor Unitario</item>
+        <item>Entrada Cantidad</item>
+        <item>Entrada Valor</item>
+        <item>Saldo Cantidad </item>
+        <item>Saldo Valor </item>
+    </string-array>
 </resources>

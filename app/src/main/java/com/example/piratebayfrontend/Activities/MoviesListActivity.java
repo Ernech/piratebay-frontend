@@ -170,7 +170,7 @@ public class MoviesListActivity extends AppCompatActivity {
             }
         });
     }
-    private void setMovieListAdapter(ArrayList<MovieModel> moviesList){
+    private void setMovieListAdapter(final ArrayList<MovieModel> moviesList){
         movieList=moviesList;
         rvMovieList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         movieListAdapter = new MovieListAdapter(movieList,getApplicationContext());
@@ -178,8 +178,11 @@ public class MoviesListActivity extends AppCompatActivity {
         movieListAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "ID movie: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "ID movie: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId()+
+                        "Proveedor: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProviderName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MoviesListActivity.this,KardexActivity.class);
+                intent.putExtra("idMovie",movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId());
+                intent.putExtra("warehouseName",warehouseName);
                 startActivity(intent);
             }
         });

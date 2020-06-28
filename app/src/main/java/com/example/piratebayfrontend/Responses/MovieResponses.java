@@ -30,7 +30,7 @@ public class MovieResponses {
     }
     public void getMoviesListByWarehouse(final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouse",warehouseName);
+        jsonParams.put("warehouseName",warehouseName);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
         Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMovies("bearer "+authToken,body);

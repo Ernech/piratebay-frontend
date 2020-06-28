@@ -2,57 +2,51 @@ package com.example.piratebayfrontend.Fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.Toast;
 
+import com.example.piratebayfrontend.Clases.Tabla;
+import com.example.piratebayfrontend.Clases.TokensControl;
+import com.example.piratebayfrontend.Interfaces.KardexCallBack;
+import com.example.piratebayfrontend.Model.KardexModel;
 import com.example.piratebayfrontend.R;
+import com.example.piratebayfrontend.Responses.KardexResponse;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
+import com.example.piratebayfrontend.Utilities.Utilities;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link KardexFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Map;
+
+
 public class KardexFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    Tabla tablaKardex;
+    Button btnEntry;
+    RefreshTokenResponse refreshTokenController;
+    Map<String, String> tokens;
+    ArrayList<KardexModel> kardex;
+    String warehouseName;
+    int idMovie;
     public KardexFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment KardexFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static KardexFragment newInstance(String param1, String param2) {
-        KardexFragment fragment = new KardexFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            idMovie = (int) getArguments().getInt("movieID");
+            warehouseName=(String) getArguments().getString("wh");
         }
     }
 
@@ -61,5 +55,31 @@ public class KardexFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_kardex, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        btnEntry = getActivity().findViewById(R.id.btnEntry);
+        tablaKardex=new Tabla((TableLayout)getActivity().findViewById(R.id.layoutTablaKardex),getActivity());
+        tokens =  TokensControl.retrieveTokens(getContext());
+        generateTableHeader();
+        final KardexResponse kardexResponse = new KardexResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseName,idMovie);
+        kardexResponse.getKardexElements(new KardexCallBack() {
+            @Override
+            public void onSuccess(boolean value, ArrayList<KardexModel> kardexElements) {
+                if(value && kardexElements!=null){
+                    kardex=kardexElements;
+                    kardexResponse.fillKardex(kardexElements,tablaKardex);
+                }else {
+                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+    private void generateTableHeader(){
+       tablaKardex.agregarCabecera(R.array.cabecera_kardex);
+
     }
 }

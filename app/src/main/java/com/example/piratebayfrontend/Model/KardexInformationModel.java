@@ -1,36 +1,22 @@
 package com.example.piratebayfrontend.Model;
 
-
-
-public class MovieModel {
-
-    private int productId;
+public class KardexInformationModel {
     private String productCode;
     private String productName;
     private String format;
-    private String creationDate;
+    private String warehouseAddress;
     private String providerName;
-    private int qttyReceived;
 
-    public MovieModel() {
+    public KardexInformationModel() {
+
     }
 
-    public MovieModel(int productId, String productCode, String productName, String format, String creationDate, String providerName, int qttyReceived) {
-        this.productId = productId;
+    public KardexInformationModel(String productCode, String productName, String format, String warehouseAddress, String providerName) {
         this.productCode = productCode;
         this.productName = productName;
         this.format = format;
-        this.creationDate = creationDate;
+        this.warehouseAddress = warehouseAddress;
         this.providerName = providerName;
-        this.qttyReceived = qttyReceived;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 
     public String getProductCode() {
@@ -57,12 +43,12 @@ public class MovieModel {
         this.format = format;
     }
 
-    public String getCreationDate() {
-        return creationDate;
+    public String getWarehouseAddress() {
+        return warehouseAddress;
     }
 
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
+    public void setWarehouseAddress(String warehouseAddress) {
+        this.warehouseAddress = warehouseAddress;
     }
 
     public String getProviderName() {
@@ -71,13 +57,5 @@ public class MovieModel {
 
     public void setProviderName(String providerName) {
         this.providerName = providerName;
-    }
-
-    public int getQttyReceived() {
-        return qttyReceived;
-    }
-
-    public void setQttyReceived(int qttyReceived) {
-        this.qttyReceived = qttyReceived;
     }
 }

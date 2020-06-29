@@ -1,23 +1,18 @@
 package com.example.piratebayfrontend.Fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.piratebayfrontend.Clases.MinMaxFilter;
+import com.example.piratebayfrontend.Activities.OrderActivity;
 import com.example.piratebayfrontend.Clases.Tabla;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.KardexCallBack;
@@ -26,6 +21,7 @@ import com.example.piratebayfrontend.R;
 import com.example.piratebayfrontend.Responses.KardexResponse;
 import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
 import com.example.piratebayfrontend.Utilities.Utilities;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -34,7 +30,7 @@ import java.util.Map;
 public class KardexFragment extends Fragment {
 
     Tabla tablaKardex;
-    Button btnEntry;
+    FloatingActionButton fabEntry;
     RefreshTokenResponse refreshTokenController;
     Map<String, String> tokens;
     ArrayList<KardexModel> kardex;
@@ -66,7 +62,7 @@ public class KardexFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnEntry = getActivity().findViewById(R.id.btnEntry);
+        fabEntry = getActivity().findViewById(R.id.fabEntry);
         tablaKardex=new Tabla((TableLayout)getActivity().findViewById(R.id.layoutTablaKardex),getActivity());
         tokens =  TokensControl.retrieveTokens(getContext());
         generateTableHeader();
@@ -82,41 +78,22 @@ public class KardexFragment extends Fragment {
                 }
             }
         });
-        btnEntry.setOnClickListener(new View.OnClickListener() {
+        fabEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    alertEntry("Registrar entrada","Ingrese la cantidad para regisrrar la entrada");
+                Intent intent = new Intent(getContext(), OrderActivity.class);
+                intent.putExtra("whId",warehouseId);
+                intent.putExtra("prodId",idMovie);
+                startActivity(intent);
             }
         });
+
 
     }
     private void generateTableHeader(){
        tablaKardex.agregarCabecera(R.array.cabecera_kardex);
 
     }
-    private void alertEntry(String title,String msg){
-        AlertDialog.Builder entryAlert = new AlertDialog.Builder(getContext());
-        View view = getLayoutInflater().inflate(R.layout.entry_layout,null);
-        TextView tvQttyAlertRequested = view.findViewById(R.id.tvAlertQttyRequested);
-        TextView tvQttyAlertCommited = view.findViewById(R.id.tvAlertQttyCommited);
-        EditText etAlertQtyyReceived = view.findViewById(R.id.etQttyReceived);
-       // etAlertQtyyReceived.setFilters(new InputFilter[]{(InputFilter) new MinMaxFilter( 1, 15)});
-        entryAlert.setView(view);
-        entryAlert.setTitle(title);
-        entryAlert.setMessage(msg);
-        entryAlert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
 
-            }
-        });
-        entryAlert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        entryAlert.show();
-    }
 
 }

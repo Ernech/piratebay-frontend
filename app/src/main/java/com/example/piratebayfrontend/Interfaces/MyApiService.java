@@ -1,7 +1,9 @@
 package com.example.piratebayfrontend.Interfaces;
 
+import com.example.piratebayfrontend.Model.KardexInformationModel;
 import com.example.piratebayfrontend.Model.KardexModel;
 import com.example.piratebayfrontend.Model.MovieModel;
+import com.example.piratebayfrontend.Model.OrderModel;
 import com.example.piratebayfrontend.Model.UserModel;
 import com.example.piratebayfrontend.Model.WarehouseModel;
 
@@ -66,4 +68,20 @@ public interface MyApiService {
             "Accept: application/json"})
     @POST("kardex")
     Call<ArrayList<KardexModel>> getKardexElements (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+    //Recibir elementos del kardex
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("kardex/information")
+    Call<KardexInformationModel> getKardexInformation (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+    //Recibir Ordenes
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("orders/not_received")
+    Call<ArrayList<OrderModel>> getOrders (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+
+    //Recibir Ordenes
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("kardex/update")
+    Call<Map<String,String>> updateKardex (@Header("Authorization") String authToken, @Body RequestBody requestBody);
 }

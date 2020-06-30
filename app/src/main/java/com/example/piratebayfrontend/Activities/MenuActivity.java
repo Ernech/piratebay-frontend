@@ -104,10 +104,7 @@ public class MenuActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
-                    TokensControl.removeTokens(getApplicationContext());
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
+                    logOut();
                 }
             }
         });

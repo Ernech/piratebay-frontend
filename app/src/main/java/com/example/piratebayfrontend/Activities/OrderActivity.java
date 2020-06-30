@@ -1,5 +1,6 @@
 package com.example.piratebayfrontend.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -107,32 +110,13 @@ public class OrderActivity extends AppCompatActivity {
         entryAlert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if(Integer.parseInt(etAlertQtyyReceived.getText().toString().trim())>qttyCommited){
-                    Toast.makeText(getApplicationContext(),"La cantidad recibida no puede ser mayor a la cantidad confirmada",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else if((Integer.parseInt(etAlertQtyyReceived.getText().toString().trim())==0) || TextUtils.isEmpty(etAlertQtyyReceived.getText().toString().trim())){
-                    Toast.makeText(getApplicationContext(),"La cantidad recibida no puede igual a 0",
-                            Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    refreshTokens();
-                    KardexResponse kardexResponse = new KardexResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN));
-                    kardexResponse.updateKardex(Integer.parseInt(etAlertQtyyReceived.getText().toString().trim()), producOrderId, new KardexUpdateCallBack() {
-                        @Override
-                        public void onSuccess(boolean value) {
-                            if (value){
-                                Toast.makeText(getApplicationContext(),"Entrada registrada",
-                                        Toast.LENGTH_SHORT).show();
-                                getOrders();
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(),"Error",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+               if(TextUtils.isEmpty(etAlertQtyyReceived.getText().toString().trim())){
+                   Toast.makeText(getApplicationContext(),"Ingrese una cantidad",
+                           Toast.LENGTH_SHORT).show();
+               }
+               else {
+                   registerEntry(Integer.parseInt(etAlertQtyyReceived.getText().toString().trim()),qttyCommited,producOrderId);
+               }
             }
         });
         entryAlert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
@@ -155,12 +139,61 @@ public class OrderActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
-                    TokensControl.removeTokens(getApplicationContext());
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
+                  logOut();
                 }
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.context_menu2,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.cmLogOut2:logOut();
+                return true;
+            case R.id.cmReturnMenu: returnMenu();
+                return true;
+            default:
+                return false;
+        }
+    }
+    private void logOut(){
+        TokensControl.removeTokens(getApplicationContext());
+        Intent intent = new Intent(OrderActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+    private void returnMenu(){
+        Intent intent = new Intent(OrderActivity.this, MenuActivity.class);
+        startActivity(intent);
+    }
+
+    private void registerEntry(final Integer qttyEntry, final Integer qttyCommited, final Integer producOrderId){
+        if(qttyEntry>qttyCommited){
+            Toast.makeText(getApplicationContext(),"La cantidad recibida no puede ser mayor a la cantidad confirmada",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else{
+            refreshTokens();
+            KardexResponse kardexResponse = new KardexResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN));
+            kardexResponse.updateKardex(qttyCommited, producOrderId, new KardexUpdateCallBack() {
+                @Override
+                public void onSuccess(boolean value) {
+                    if (value){
+                        Toast.makeText(getApplicationContext(),"Entrada registrada",
+                                Toast.LENGTH_SHORT).show();
+                        getOrders();
+                    }
+                    else{
+                        refreshTokens();
+                       registerEntry(qttyEntry,qttyCommited,producOrderId);
+                    }
+                }
+            });
+        }
     }
 }

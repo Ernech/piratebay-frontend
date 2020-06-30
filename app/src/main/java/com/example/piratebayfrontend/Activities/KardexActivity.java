@@ -1,11 +1,14 @@
 package com.example.piratebayfrontend.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -81,12 +84,36 @@ public class KardexActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
-                    TokensControl.removeTokens(getApplicationContext());
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
+                    logOut();
                 }
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.context_menu2,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.cmLogOut2:logOut();
+                return true;
+            case R.id.cmReturnMenu: returnMenu();
+                return true;
+            default:
+                return false;
+        }
+    }
+    private void logOut(){
+        TokensControl.removeTokens(getApplicationContext());
+        Intent intent = new Intent(KardexActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+    private void returnMenu(){
+        Intent intent = new Intent(KardexActivity.this, MenuActivity.class);
+        startActivity(intent);
     }
 }

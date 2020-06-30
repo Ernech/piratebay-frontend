@@ -16,8 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.example.piratebayfrontend.Clases.MovieListAdapter;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.MoviesCallBack;
@@ -141,12 +139,14 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    refreshTokens();
+                    getMovies();
+                    //Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    private void getMoviesByName(String movieName){
+    private void getMoviesByName(final String movieName){
         MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.getMoviesListByWarehouseAndName(movieName,new MoviesCallBack() {
             @Override
@@ -155,7 +155,9 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    refreshTokens();
+                    getMoviesByName(movieName);
+                    //Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -176,7 +178,7 @@ public class MoviesListActivity extends AppCompatActivity {
             }
         });
     }
-    private void sortMoviesByParameter(String parameter){
+    private void sortMoviesByParameter(final String parameter){
         MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.sortMoviesListByWarehouseAndParameter(parameter, new MoviesCallBack() {
             @Override
@@ -185,13 +187,15 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    refreshTokens();
+                    sortMoviesByParameter(parameter);
                 }
             }
         });
 
     }
-    private void searchMoviesAndSortByParameter(String title, String parameter){
+    private void searchMoviesAndSortByParameter(final String title, final String parameter){
         MovieResponses movieResponses = new MovieResponses(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId);
         movieResponses.getMoviesByNameSortedByParameter(title, parameter, new MoviesCallBack() {
             @Override
@@ -200,7 +204,9 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    refreshTokens();
+                    searchMoviesAndSortByParameter(title,parameter);
                 }
             }
         });
@@ -232,10 +238,7 @@ public class MoviesListActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
-                    TokensControl.removeTokens(getApplicationContext());
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
+                    logOut();
                 }
             }
         });

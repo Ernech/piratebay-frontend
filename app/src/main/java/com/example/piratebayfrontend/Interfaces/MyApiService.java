@@ -53,23 +53,22 @@ public interface MyApiService {
     Call<ArrayList<WarehouseModel>> getAllWareHouses (@Header("Authorization") String authToken);
 
     // Obtener lista de películas por almacen y nombre
-    @Headers({"Accept: application/json"})
-    @POST("movies/{warehouseId}/search")
-    Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Path("warehouseId") Integer warehouseId,
-                                                      @Body RequestBody requestBody);
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("movies/search")
+    Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
 
     //Ordenar películas por parámetro
-    @Headers({"Accept: application/json"})
-    @GET("movies/{warehouseId}/sort")
-    Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Path("warehouseId") Integer warehouseId,
-                                                             @Body RequestBody requestBody) ;
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("movies/sort")
+    Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
 
     //Obtener películas por nombre ordenadas por parámetro
-    @Headers({"Accept: application/json"})
-    @POST("movies/{warehouseId}/search/sort")
-    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,   @Path("warehouseId") Integer warehouseId
-                                                                ,@Body RequestBody requestBody);
-
+    @Headers({"Content-Type: application/json",
+            "Accept: application/json"})
+    @POST("movies/search/sort")
+    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})

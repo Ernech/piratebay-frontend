@@ -54,11 +54,12 @@ public class MovieResponses {
         });
     }
     public void getMoviesListByWarehouseAndName(String name,final MoviesCallBack callBack){
-        Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("searchParameter",name);
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
-                (new JSONObject(jsonParams)).toString());
-        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByParameter("bearer ",warehouseId,body);
+            Map<String, Object> jsonParams = new HashMap<>();
+            jsonParams.put("warehouseId",warehouseId);
+            jsonParams.put("searchParameter",name);
+            RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
+                    (new JSONObject(jsonParams)).toString());
+            Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByParameter("bearer "+authToken,body);
         call.enqueue(new Callback<ArrayList<MovieModel>>() {
             @Override
             public void onResponse(Call<ArrayList<MovieModel>> call, Response<ArrayList<MovieModel>> response) {
@@ -84,10 +85,11 @@ public class MovieResponses {
     }
     public void sortMoviesListByWarehouseAndParameter(String parameter,final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
+        jsonParams.put("warehouseId",warehouseId);
         jsonParams.put("sortParameter",parameter);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
-        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesOrderedByParameter("bearer "+authToken,warehouseId,body);
+        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesOrderedByParameter("bearer "+authToken,body);
         call.enqueue(new Callback<ArrayList<MovieModel>>() {
             @Override
             public void onResponse(Call<ArrayList<MovieModel>> call, Response<ArrayList<MovieModel>> response) {
@@ -113,11 +115,12 @@ public class MovieResponses {
     }
     public void getMoviesByNameSortedByParameter(String name, String parameter, final MoviesCallBack callBack){
         Map<String, Object> jsonParams = new HashMap<>();
+        jsonParams.put("warehouseId",warehouseId);
         jsonParams.put("searchParameter",name);
         jsonParams.put("sortParameter",parameter);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
-        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByNameSortedByParameter("bearer "+authToken,warehouseId,body);
+        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMoviesByNameSortedByParameter("bearer "+authToken,body);
         call.enqueue(new Callback<ArrayList<MovieModel>>() {
             @Override
             public void onResponse(Call<ArrayList<MovieModel>> call, Response<ArrayList<MovieModel>> response) {

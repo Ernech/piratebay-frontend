@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import com.example.piratebayfrontend.Clases.MovieListAdapter;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.MoviesCallBack;
@@ -56,6 +58,7 @@ public class MoviesListActivity extends AppCompatActivity {
         spSearchOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                   refreshTokens();
                    if(i==0){
                        sortParameter ="";
                    }
@@ -71,7 +74,7 @@ public class MoviesListActivity extends AppCompatActivity {
                    else if("Cantidad".equals(Utilities.searchOptions().get(i))){
                        sortParameter = Utilities.QTTY_RECEIVED;
                    }
-                     getMoviesFromWarehouse();
+                   getMoviesFromWarehouse();
             }
 
             @Override
@@ -87,7 +90,8 @@ public class MoviesListActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                   getMoviesFromWarehouse();
+                refreshTokens();
+                getMoviesFromWarehouse();
             }
 
             @Override
@@ -139,9 +143,7 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                    refreshTokens();
-                    getMovies();
-                    //Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    logOut();
                 }
             }
         });
@@ -155,9 +157,7 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                    refreshTokens();
-                    getMoviesByName(movieName);
-                    //Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    logOut();
                 }
             }
         });
@@ -171,9 +171,10 @@ public class MoviesListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 refreshTokens();
-                Intent intent = new Intent(MoviesListActivity.this,KardexActivity.class);
+                Intent intent = new Intent(MoviesListActivity.this, KardexActivity.class);
                 intent.putExtra("idMovie",movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId());
                 intent.putExtra("warehouseId",warehouseId);
+                intent.putExtra("fromMovieList", true);
                 startActivity(intent);
             }
         });
@@ -187,9 +188,7 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                  //  Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                    refreshTokens();
-                    sortMoviesByParameter(parameter);
+                    logOut();
                 }
             }
         });
@@ -204,9 +203,7 @@ public class MoviesListActivity extends AppCompatActivity {
                     setMovieListAdapter(moviesList);
                 }
                 else{
-                   // Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                    refreshTokens();
-                    searchMoviesAndSortByParameter(title,parameter);
+                    logOut();
                 }
             }
         });
@@ -238,6 +235,7 @@ public class MoviesListActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
+                    Toast.makeText(getApplicationContext(), "Su sesión ha expirado", Toast.LENGTH_SHORT).show();
                     logOut();
                 }
             }

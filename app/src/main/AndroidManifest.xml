@@ -14,7 +14,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Activities.OrderActivity"></activity>
         <activity android:name=".Activities.KardexActivity" />
-        <activity android:name=".Activities.MoviesListActivity" />
+        <activity android:name=".Activities.MoviesListActivity"
+                  android:windowSoftInputMode="stateHidden" />
         <activity android:name=".Activities.WarehousesActivity" />
         <activity android:name=".Activities.UsersListActivity" />
         <activity android:name=".Activities.FormActivity" />

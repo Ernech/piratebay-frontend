@@ -14,8 +14,8 @@
         android:text="Kardex de inventario"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:textSize="25dp"
-        android:layout_marginBottom="15dp"/>
+        android:textSize="20dp"
+        android:layout_marginBottom="10dp"/>
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,7 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:src="@android:drawable/ic_input_add"
+        android:backgroundTint="@color/colorAccent"
+        android:src="@drawable/add_icon"
       />
 
 

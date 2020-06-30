@@ -17,6 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface MyApiService {
     //Autenticación login
@@ -44,10 +45,12 @@ public interface MyApiService {
             "Accept: application/json"})
     @POST("movies")
     Call<ArrayList<MovieModel>> getMovies (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+
     //Obtener Almacenes
     @Headers({"Accept: application/json"})
     @GET("warehouse")
     Call<ArrayList<WarehouseModel>> getAllWareHouses (@Header("Authorization") String authToken);
+
     // Obtener lista de películas por almacen y nombre
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
@@ -82,6 +85,6 @@ public interface MyApiService {
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("kardex/update")
+    @PUT("kardex/update")
     Call<Map<String,String>> updateKardex (@Header("Authorization") String authToken, @Body RequestBody requestBody);
 }

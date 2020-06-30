@@ -37,7 +37,6 @@ import java.util.Map;
 public class OrderActivity extends AppCompatActivity {
 
     RecyclerView rvOrders;
-    TextView tvProduct;
     Map<String, String> tokens;
     RefreshTokenResponse refreshTokenController;
     OrderListAdapter orderListAdapter;
@@ -57,7 +56,6 @@ public class OrderActivity extends AppCompatActivity {
     }
     private void bindUI(){
         rvOrders = findViewById(R.id.rvProd);
-        tvProduct = findViewById(R.id.tvProductOrders);
     }
     private void getOrders(){
         OrdersResponse ordersResponse = new OrdersResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN),warehouseId,productId);
@@ -84,9 +82,6 @@ public class OrderActivity extends AppCompatActivity {
                         orderList.get(rvOrders.getChildAdapterPosition(view)).getQttyCommit(),
                         orderList.get(rvOrders.getChildAdapterPosition(view)).getQttyReceived(),
                         orderList.get(rvOrders.getChildAdapterPosition(view)).getProviderProductId());
-                Toast.makeText(getApplicationContext(),""+ orderList.get(rvOrders.getChildAdapterPosition(view)).getQttyReceived()+" "+
-                        orderList.get(rvOrders.getChildAdapterPosition(view)).getProviderProductId() ,
-                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -110,6 +105,7 @@ public class OrderActivity extends AppCompatActivity {
         entryAlert.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                refreshTokens();
                if(TextUtils.isEmpty(etAlertQtyyReceived.getText().toString().trim())){
                    Toast.makeText(getApplicationContext(),"Ingrese una cantidad",
                            Toast.LENGTH_SHORT).show();
@@ -139,7 +135,8 @@ public class OrderActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
-                  logOut();
+                    Toast.makeText(getApplicationContext(), "Su sesión ha expirado", Toast.LENGTH_SHORT).show();
+                    logOut();
                 }
             }
         });
@@ -178,9 +175,8 @@ public class OrderActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
         else{
-            refreshTokens();
             KardexResponse kardexResponse = new KardexResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN));
-            kardexResponse.updateKardex(qttyCommited, producOrderId, new KardexUpdateCallBack() {
+            kardexResponse.updateKardex(qttyEntry, producOrderId, new KardexUpdateCallBack() {
                 @Override
                 public void onSuccess(boolean value) {
                     if (value){
@@ -189,11 +185,20 @@ public class OrderActivity extends AppCompatActivity {
                         getOrders();
                     }
                     else{
-                        refreshTokens();
-                       registerEntry(qttyEntry,qttyCommited,producOrderId);
+                        logOut();
                     }
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(OrderActivity.this, KardexActivity.class);
+        intent.putExtra("idMovie", productId);
+        intent.putExtra("warehouseId", warehouseId);
+        intent.putExtra("fromMovieList", false);
+        startActivity(intent);
     }
 }

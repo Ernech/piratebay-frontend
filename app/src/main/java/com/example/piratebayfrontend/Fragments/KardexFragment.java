@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.example.piratebayfrontend.Activities.KardexActivity;
 import com.example.piratebayfrontend.Activities.OrderActivity;
 import com.example.piratebayfrontend.Clases.Tabla;
 import com.example.piratebayfrontend.Clases.TokensControl;
@@ -41,9 +42,6 @@ public class KardexFragment extends Fragment {
     public KardexFragment() {
         // Required empty public constructor
     }
-
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,7 +74,7 @@ public class KardexFragment extends Fragment {
                     kardex=kardexElements;
                     kardexResponse.fillKardex(kardexElements,tablaKardex);
                 }else {
-                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+                    logOut();
                 }
             }
         });
@@ -118,4 +116,10 @@ public class KardexFragment extends Fragment {
         });
     }
 
+    private void logOut(){
+        TokensControl.removeTokens(getContext());
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 }

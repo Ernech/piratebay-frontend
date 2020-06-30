@@ -80,11 +80,16 @@ public class ProductInfoFragment extends Fragment {
                     txProviderName.setText(kardexInformationModel.getProviderName());
                 }
                 else{
-                    Toast.makeText(getContext(),"Error",Toast.LENGTH_SHORT).show();
+                    logOut();
                 }
             }
         });
-
     }
 
+    private void logOut(){
+        TokensControl.removeTokens(getContext());
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 }

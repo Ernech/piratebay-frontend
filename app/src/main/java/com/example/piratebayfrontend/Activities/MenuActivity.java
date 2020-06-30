@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Clases.VerifyFeatures;
@@ -104,6 +105,7 @@ public class MenuActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
+                    Toast.makeText(getApplicationContext(), "Su sesión ha expirado", Toast.LENGTH_SHORT).show();
                     logOut();
                 }
             }

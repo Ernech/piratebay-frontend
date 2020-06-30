@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Fragments.KardexFragment;
@@ -47,14 +48,19 @@ public class KardexActivity extends AppCompatActivity {
         productInfoFragment.setArguments(args);
         tokens = TokensControl.retrieveTokens(getApplicationContext());
         refreshTokens();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,productInfoFragment).commit();
-
+        if (bundle.getBoolean("fromMovieList")){
+            productInfoFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,productInfoFragment).commit();
+        } else {
+            kardexFragment.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,kardexFragment).commit();
+        }
     }
+
     private void bindUI(){
         productInfoFragment=new ProductInfoFragment();
         kardexFragment = new KardexFragment();
     }
-
 
     public void onClick(View view) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -84,6 +90,7 @@ public class KardexActivity extends AppCompatActivity {
                     tokens = TokensControl.retrieveTokens(getApplicationContext());
                     //  authnTokenExpired =false;
                 } else {
+                    Toast.makeText(getApplicationContext(), "Su sesión ha expirado", Toast.LENGTH_SHORT).show();
                     logOut();
                 }
             }

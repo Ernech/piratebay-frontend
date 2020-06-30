@@ -16,10 +16,12 @@ import android.widget.Toast;
 
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Clases.WarehouseAdapter;
+import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.Interfaces.WarehouseCallBack;
 import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.Model.WarehouseModel;
 import com.example.piratebayfrontend.R;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
 import com.example.piratebayfrontend.Responses.WarehouseResponse;
 import com.example.piratebayfrontend.Utilities.Utilities;
 
@@ -27,10 +29,13 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class WarehousesActivity extends AppCompatActivity {
+
     RecyclerView rvWarehouses;
     Map<String,String> tokens;
     ArrayList<WarehouseModel> warehouses;
     WarehouseAdapter warehouseAdapter;
+    RefreshTokenResponse refreshTokenController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +43,6 @@ public class WarehousesActivity extends AppCompatActivity {
         tokens = TokensControl.retrieveTokens(getApplicationContext());
         bindUI();
         getWarehouses();
-
     }
 
     private void bindUI(){
@@ -67,6 +71,7 @@ public class WarehousesActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
     private void returnMenu(){
         Intent intent = new Intent(WarehousesActivity.this, MenuActivity.class);
         startActivity(intent);
@@ -83,6 +88,7 @@ public class WarehousesActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setWarehouseAdapter(final ArrayList<WarehouseModel> warehouseList){
         warehouses = warehouseList;
         rvWarehouses.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -91,9 +97,30 @@ public class WarehousesActivity extends AppCompatActivity {
         warehouseAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshTokens();
                 Intent intent = new Intent(getApplicationContext(),MoviesListActivity.class);
                 intent.putExtra(Utilities.WAREHOUSE,warehouseList.get(rvWarehouses.getChildAdapterPosition(view)).getWarehouseId());
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void refreshTokens(){
+        refreshTokenController = new RefreshTokenResponse(tokens.get("refresh"));
+        refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
+            @Override
+            public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
+                if(value && newAuthnToken!=null && newRefreshToken!=null){
+                    TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
+                    tokens.clear();
+                    tokens = TokensControl.retrieveTokens(getApplicationContext());
+                    //  authnTokenExpired =false;
+                } else {
+                    TokensControl.removeTokens(getApplicationContext());
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
             }
         });
     }

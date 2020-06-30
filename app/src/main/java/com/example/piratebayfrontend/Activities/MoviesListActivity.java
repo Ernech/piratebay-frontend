@@ -21,16 +21,19 @@ import android.widget.Toast;
 import com.example.piratebayfrontend.Clases.MovieListAdapter;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.MoviesCallBack;
+import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.Model.MovieModel;
 import com.example.piratebayfrontend.R;
 import com.example.piratebayfrontend.Responses.MovieResponses;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
 import com.example.piratebayfrontend.Utilities.Utilities;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class MoviesListActivity extends AppCompatActivity {
+
     EditText etSearch;
     RecyclerView rvMovieList;
     Spinner spSearchOptions;
@@ -39,6 +42,8 @@ public class MoviesListActivity extends AppCompatActivity {
     int warehouseId;
     Map<String, String> tokens;
     String sortParameter;
+    RefreshTokenResponse refreshTokenController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,9 +97,6 @@ public class MoviesListActivity extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     private void bindUI(){
@@ -166,8 +168,7 @@ public class MoviesListActivity extends AppCompatActivity {
         movieListAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "ID movie: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId()+
-                        "Proveedor: "+movieList.get(rvMovieList.getChildAdapterPosition(view)).getProviderName(), Toast.LENGTH_SHORT).show();
+                refreshTokens();
                 Intent intent = new Intent(MoviesListActivity.this,KardexActivity.class);
                 intent.putExtra("idMovie",movieList.get(rvMovieList.getChildAdapterPosition(view)).getProductId());
                 intent.putExtra("warehouseId",warehouseId);
@@ -218,5 +219,25 @@ public class MoviesListActivity extends AppCompatActivity {
         else if("".equals(etSearch.getText().toString().trim()) && !"".equals(sortParameter)){
             sortMoviesByParameter(sortParameter);
         }
+    }
+
+    private void refreshTokens(){
+        refreshTokenController = new RefreshTokenResponse(tokens.get("refresh"));
+        refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
+            @Override
+            public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
+                if(value && newAuthnToken!=null && newRefreshToken!=null){
+                    TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
+                    tokens.clear();
+                    tokens = TokensControl.retrieveTokens(getApplicationContext());
+                    //  authnTokenExpired =false;
+                } else {
+                    TokensControl.removeTokens(getApplicationContext());
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        });
     }
 }

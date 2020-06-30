@@ -19,10 +19,13 @@ import com.example.piratebayfrontend.Clases.OrderListAdapter;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.KardexUpdateCallBack;
 import com.example.piratebayfrontend.Interfaces.OrdersCallBack;
+import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
+import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.Model.OrderModel;
 import com.example.piratebayfrontend.R;
 import com.example.piratebayfrontend.Responses.KardexResponse;
 import com.example.piratebayfrontend.Responses.OrdersResponse;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
 import com.example.piratebayfrontend.Utilities.Utilities;
 
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class OrderActivity extends AppCompatActivity {
     RecyclerView rvOrders;
     TextView tvProduct;
     Map<String, String> tokens;
+    RefreshTokenResponse refreshTokenController;
     OrderListAdapter orderListAdapter;
     int warehouseId;
     int productId;
@@ -71,6 +75,7 @@ public class OrderActivity extends AppCompatActivity {
         orderListAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshTokens();
                 alertEntry("Registrar entrada","Ingrese la cantidad que desea registrar",
                         orderList.get(rvOrders.getChildAdapterPosition(view)).getQttyOrdered(),
                         orderList.get(rvOrders.getChildAdapterPosition(view)).getQttyCommit(),
@@ -111,6 +116,7 @@ public class OrderActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    refreshTokens();
                     KardexResponse kardexResponse = new KardexResponse(tokens.get(Utilities.AUTHENTICATION_TOKEN));
                     kardexResponse.updateKardex(Integer.parseInt(etAlertQtyyReceived.getText().toString().trim()), producOrderId, new KardexUpdateCallBack() {
                         @Override
@@ -136,5 +142,25 @@ public class OrderActivity extends AppCompatActivity {
             }
         });
         entryAlert.show();
+    }
+
+    private void refreshTokens(){
+        refreshTokenController = new RefreshTokenResponse(tokens.get("refresh"));
+        refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
+            @Override
+            public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
+                if(value && newAuthnToken!=null && newRefreshToken!=null){
+                    TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
+                    tokens.clear();
+                    tokens = TokensControl.retrieveTokens(getApplicationContext());
+                    //  authnTokenExpired =false;
+                } else {
+                    TokensControl.removeTokens(getApplicationContext());
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        });
     }
 }

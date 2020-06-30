@@ -1,5 +1,6 @@
 package com.example.piratebayfrontend.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,15 +14,19 @@ import android.widget.Toast;
 
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.KardexInformationCallBack;
+import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
+import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.Model.KardexInformationModel;
 import com.example.piratebayfrontend.R;
 import com.example.piratebayfrontend.Responses.KardexResponse;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
 import com.example.piratebayfrontend.Utilities.Utilities;
 
 import java.util.Map;
 
 
 public class ProductInfoFragment extends Fragment {
+
     int warehouseId;
     int idMovie;
     Map<String, String> tokens;
@@ -81,4 +86,5 @@ public class ProductInfoFragment extends Fragment {
         });
 
     }
+
 }

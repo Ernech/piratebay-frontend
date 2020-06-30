@@ -16,6 +16,8 @@ import com.example.piratebayfrontend.Activities.OrderActivity;
 import com.example.piratebayfrontend.Clases.Tabla;
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Interfaces.KardexCallBack;
+import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
+import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.Model.KardexModel;
 import com.example.piratebayfrontend.R;
 import com.example.piratebayfrontend.Responses.KardexResponse;
@@ -81,6 +83,7 @@ public class KardexFragment extends Fragment {
         fabEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshTokens();
                 Intent intent = new Intent(getContext(), OrderActivity.class);
                 intent.putExtra("whId",warehouseId);
                 intent.putExtra("prodId",idMovie);
@@ -95,5 +98,24 @@ public class KardexFragment extends Fragment {
 
     }
 
+    private void refreshTokens(){
+        refreshTokenController = new RefreshTokenResponse(tokens.get("refresh"));
+        refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
+            @Override
+            public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
+                if(value && newAuthnToken!=null && newRefreshToken!=null){
+                    TokensControl.saveTokens(newAuthnToken, newRefreshToken, getContext());
+                    tokens.clear();
+                    tokens = TokensControl.retrieveTokens(getContext());
+                    //  authnTokenExpired =false;
+                } else {
+                    TokensControl.removeTokens(getContext());
+                    Intent i = new Intent(getContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        });
+    }
 
 }

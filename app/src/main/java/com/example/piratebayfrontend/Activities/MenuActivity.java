@@ -12,19 +12,26 @@ import android.view.View;
 
 import com.example.piratebayfrontend.Clases.TokensControl;
 import com.example.piratebayfrontend.Clases.VerifyFeatures;
+import com.example.piratebayfrontend.Interfaces.RefreshTokenCallBack;
 import com.example.piratebayfrontend.MainActivity;
 import com.example.piratebayfrontend.R;
+import com.example.piratebayfrontend.Responses.RefreshTokenResponse;
+
+import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
 
     CardView cvKardex;
     CardView cvUsuarios;
+    Map<String,String> tokens;
+    RefreshTokenResponse refreshTokenController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        tokens = TokensControl.retrieveTokens(getApplicationContext());
         bindUI();
 
         // Verificar las features de un usuario
@@ -35,7 +42,6 @@ public class MenuActivity extends AppCompatActivity {
         // Warehouse Supervisor no tiene disponible el botón para eliminar usuarios.
         // Warehouse Employee sólo tiene disponible la página de productos.
 
-
         if(hasFeaturePageUserManagement){
             cvUsuarios.setVisibility(View.VISIBLE);
         }
@@ -43,6 +49,7 @@ public class MenuActivity extends AppCompatActivity {
         cvUsuarios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshTokens();
                 Intent intent=new Intent(MenuActivity.this, UsersListActivity.class);
                 startActivity(intent);
             }
@@ -51,6 +58,7 @@ public class MenuActivity extends AppCompatActivity {
         cvKardex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshTokens();
                 Intent intent=new Intent(MenuActivity.this, WarehousesActivity.class);
                 startActivity(intent);
             }
@@ -84,4 +92,25 @@ public class MenuActivity extends AppCompatActivity {
                 return false;
         }
     }
+
+    private void refreshTokens(){
+        refreshTokenController = new RefreshTokenResponse(tokens.get("refresh"));
+        refreshTokenController.sendToPostRefreshToken(new RefreshTokenCallBack() {
+            @Override
+            public void onSuccess(boolean value, Object newAuthnToken, Object newRefreshToken) {
+                if(value && newAuthnToken!=null && newRefreshToken!=null){
+                    TokensControl.saveTokens(newAuthnToken, newRefreshToken, getApplicationContext());
+                    tokens.clear();
+                    tokens = TokensControl.retrieveTokens(getApplicationContext());
+                    //  authnTokenExpired =false;
+                } else {
+                    TokensControl.removeTokens(getApplicationContext());
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
+                }
+            }
+        });
+    }
+
 }

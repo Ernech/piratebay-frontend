@@ -54,21 +54,21 @@ public interface MyApiService {
 
     // Obtener lista de películas por almacen y nombre
     @Headers({"Accept: application/json"})
-    @GET("movies/{warehouseId}/search/{searchParameter}")
+    @POST("movies/{warehouseId}/search")
     Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Path("warehouseId") Integer warehouseId,
-                                                      @Path("searchParameter") String searchParameter);
+                                                      @Body RequestBody requestBody);
 
     //Ordenar películas por parámetro
     @Headers({"Accept: application/json"})
-    @GET("movies/{warehouseId}/sort/{sortParameter}")
+    @GET("movies/{warehouseId}/sort")
     Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Path("warehouseId") Integer warehouseId,
-                                                             @Path("sortParameter") String sortParameter);
+                                                             @Body RequestBody requestBody) ;
 
     //Obtener películas por nombre ordenadas por parámetro
     @Headers({"Accept: application/json"})
-    @GET("movies/{warehouseId}/search/{searchParameter}/sort/{sortParameter}")
-    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,   @Path("warehouseId") Integer warehouseId,
-                                                                  @Path("searchParameter") String searchParameter,@Path("sortParameter") String sortParameter);
+    @POST("movies/{warehouseId}/search/sort")
+    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,   @Path("warehouseId") Integer warehouseId
+                                                                ,@Body RequestBody requestBody);
 
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
@@ -80,14 +80,14 @@ public interface MyApiService {
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("kardex/{warehouseId}/information/{productId}")
+    @GET("kardex/{warehouseId}/information/{productId}")
     Call<KardexInformationModel> getKardexInformation (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
                                                        @Path("productId") Integer productId);
 
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("orders/not_received")
+    @GET("orders/not_received")
     Call<ArrayList<OrderModel>> getOrders (@Header("Authorization") String authToken, @Body RequestBody requestBody);
 
     //Recibir Ordenes

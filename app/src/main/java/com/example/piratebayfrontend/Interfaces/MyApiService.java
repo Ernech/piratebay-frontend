@@ -18,6 +18,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface MyApiService {
     //Autenticación login
@@ -40,11 +41,11 @@ public interface MyApiService {
     @Headers({"Accept: application/json"})
     @GET("user")
     Call<ArrayList<UserModel>> getUsers (@Header("Authorization") String authToken);
+
     // Obtener lista de películas por almacen
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
-    @POST("movies")
-    Call<ArrayList<MovieModel>> getMovies (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    @Headers({"Accept: application/json"})
+    @GET("movies/{warehouseId}")
+    Call<ArrayList<MovieModel>> getMovies (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId);
 
     //Obtener Almacenes
     @Headers({"Accept: application/json"})
@@ -56,26 +57,31 @@ public interface MyApiService {
             "Accept: application/json"})
     @POST("movies/search")
     Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+
     //Ordenar películas por parámetro
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("movies/sort")
     Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+
     //Obtener películas por nombre ordenadas por parámetro
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("movies/search/sort")
     Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("kardex")
     Call<ArrayList<KardexModel>> getKardexElements (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
     @POST("kardex/information")
     Call<KardexInformationModel> getKardexInformation (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})

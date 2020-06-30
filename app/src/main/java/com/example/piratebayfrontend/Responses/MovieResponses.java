@@ -29,11 +29,7 @@ public class MovieResponses {
         this.warehouseId = warehouseId;
     }
     public void getMoviesListByWarehouse(final MoviesCallBack callBack){
-        Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouseId",warehouseId);
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
-                (new JSONObject(jsonParams)).toString());
-        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMovies("bearer "+authToken,body);
+        Call<ArrayList<MovieModel>> call = MyApiAdapter.getApiService().getMovies("bearer "+authToken,warehouseId);
         call.enqueue(new Callback<ArrayList<MovieModel>>() {
             @Override
             public void onResponse(Call<ArrayList<MovieModel>> call, Response<ArrayList<MovieModel>> response) {

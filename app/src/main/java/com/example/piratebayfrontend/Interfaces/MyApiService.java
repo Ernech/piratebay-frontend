@@ -73,14 +73,16 @@ public interface MyApiService {
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("kardex")
-    Call<ArrayList<KardexModel>> getKardexElements (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+    @POST("kardex/{warehouseId}/{productId}")
+    Call<ArrayList<KardexModel>> getKardexElements (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
+                                                    @Path("productId") Integer productId);
 
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("kardex/information")
-    Call<KardexInformationModel> getKardexInformation (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+    @POST("kardex/{warehouseId}/information/{productId}")
+    Call<KardexInformationModel> getKardexInformation (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
+                                                       @Path("productId") Integer productId);
 
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",

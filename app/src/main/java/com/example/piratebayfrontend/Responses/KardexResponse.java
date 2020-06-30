@@ -44,12 +44,7 @@ public class KardexResponse {
 
 
     public void getKardexInformation(final KardexInformationCallBack callBack){
-        Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouseId",warehouseId);
-        jsonParams.put("productId",idMovie);
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
-                (new JSONObject(jsonParams)).toString());
-        Call<KardexInformationModel> call = MyApiAdapter.getApiService().getKardexInformation("bearer "+authToken,body);
+        Call<KardexInformationModel> call = MyApiAdapter.getApiService().getKardexInformation("bearer "+authToken,warehouseId,idMovie);
         call.enqueue(new Callback<KardexInformationModel>() {
             @Override
             public void onResponse(Call<KardexInformationModel> call, Response<KardexInformationModel> response) {
@@ -75,12 +70,7 @@ public class KardexResponse {
     }
 
     public void getKardexElements(final KardexCallBack callBack){
-        Map<String, Object> jsonParams = new HashMap<>();
-        jsonParams.put("warehouseId",warehouseId);
-        jsonParams.put("productId",idMovie);
-        RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
-                (new JSONObject(jsonParams)).toString());
-        Call<ArrayList<KardexModel>> call = MyApiAdapter.getApiService().getKardexElements("bearer "+authToken,body);
+        Call<ArrayList<KardexModel>> call = MyApiAdapter.getApiService().getKardexElements("bearer "+authToken,warehouseId,idMovie);
         call.enqueue(new Callback<ArrayList<KardexModel>>() {
             @Override
             public void onResponse(Call<ArrayList<KardexModel>> call, Response<ArrayList<KardexModel>> response) {

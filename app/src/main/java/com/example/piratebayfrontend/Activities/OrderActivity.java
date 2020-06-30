@@ -63,6 +63,9 @@ public class OrderActivity extends AppCompatActivity {
             @Override
             public void onSuccess(boolean value, ArrayList<OrderModel> orderList) {
                 if (value && orderList!=null){
+                    if(orderList.size()==0){
+                        Toast.makeText(getApplicationContext(),"La lista de órdenes está vacia", Toast.LENGTH_SHORT).show();
+                    }
                     setOrdersListAdapter(orderList);
                 }
             }

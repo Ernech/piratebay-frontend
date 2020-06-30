@@ -49,7 +49,7 @@ public interface MyApiService {
 
     //Obtener Almacenes
     @Headers({"Accept: application/json"})
-    @GET("warehouse")
+    @GET("warehouses")
     Call<ArrayList<WarehouseModel>> getAllWareHouses (@Header("Authorization") String authToken);
 
     // Obtener lista de películas por almacen y nombre
@@ -73,22 +73,23 @@ public interface MyApiService {
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("kardex/{warehouseId}/{productId}")
+    @GET("kardex/{warehouseId}/{productId}")
     Call<ArrayList<KardexModel>> getKardexElements (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
                                                     @Path("productId") Integer productId);
 
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("kardex/{warehouseId}/information/{productId}")
+    @GET("kardex/{warehouseId}/information/{productId}")
     Call<KardexInformationModel> getKardexInformation (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
                                                        @Path("productId") Integer productId);
 
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @POST("orders/not_received")
-    Call<ArrayList<OrderModel>> getOrders (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+    @GET("orders/{warehouseId}/not_entry/{productId}")
+    Call<ArrayList<OrderModel>> getOrders (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
+                                           @Path("productId") Integer productId);
 
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",

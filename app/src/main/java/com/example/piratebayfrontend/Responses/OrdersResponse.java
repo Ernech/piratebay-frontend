@@ -40,7 +40,7 @@ public class OrdersResponse {
         jsonParams.put("productId",productId);
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),
                 (new JSONObject(jsonParams)).toString());
-        Call<ArrayList<OrderModel>> call = MyApiAdapter.getApiService().getOrders("bearer "+authToken,body);
+        Call<ArrayList<OrderModel>> call = MyApiAdapter.getApiService().getOrders("bearer "+authToken,warehouseId, productId);
         call.enqueue(new Callback<ArrayList<OrderModel>>() {
             @Override
             public void onResponse(Call<ArrayList<OrderModel>> call, Response<ArrayList<OrderModel>> response) {

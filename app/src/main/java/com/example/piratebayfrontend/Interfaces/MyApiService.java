@@ -53,22 +53,22 @@ public interface MyApiService {
     Call<ArrayList<WarehouseModel>> getAllWareHouses (@Header("Authorization") String authToken);
 
     // Obtener lista de películas por almacen y nombre
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
-    @POST("movies/search")
-    Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    @Headers({"Accept: application/json"})
+    @GET("movies/{warehouseId}/search/{searchParameter}")
+    Call<ArrayList<MovieModel>> getMoviesByParameter (@Header("Authorization") String authToken,  @Path("warehouseId") Integer warehouseId,
+                                                      @Path("searchParameter") String searchParameter);
 
     //Ordenar películas por parámetro
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
-    @POST("movies/sort")
-    Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    @Headers({"Accept: application/json"})
+    @GET("movies/{warehouseId}/sort/{sortParameter}")
+    Call<ArrayList<MovieModel>> getMoviesOrderedByParameter (@Header("Authorization") String authToken,  @Path("warehouseId") Integer warehouseId,
+                                                             @Path("sortParameter") String sortParameter);
 
     //Obtener películas por nombre ordenadas por parámetro
-    @Headers({"Content-Type: application/json",
-            "Accept: application/json"})
-    @POST("movies/search/sort")
-    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,  @Body RequestBody requestBody);
+    @Headers({"Accept: application/json"})
+    @GET("movies/{warehouseId}/search/{searchParameter}/sort/{sortParameter}")
+    Call<ArrayList<MovieModel>> getMoviesByNameSortedByParameter (@Header("Authorization") String authToken,   @Path("warehouseId") Integer warehouseId,
+                                                                  @Path("searchParameter") String searchParameter,@Path("sortParameter") String sortParameter);
 
     //Recibir elementos del kardex
     @Headers({"Content-Type: application/json",

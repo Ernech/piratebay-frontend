@@ -87,8 +87,9 @@ public interface MyApiService {
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",
             "Accept: application/json"})
-    @GET("orders/not_received")
-    Call<ArrayList<OrderModel>> getOrders (@Header("Authorization") String authToken, @Body RequestBody requestBody);
+    @GET("/{warehouseId}/not_entry/{productId}")
+    Call<ArrayList<OrderModel>> getOrders (@Header("Authorization") String authToken, @Path("warehouseId") Integer warehouseId,
+                                           @Path("productId") Integer productId);
 
     //Recibir Ordenes
     @Headers({"Content-Type: application/json",

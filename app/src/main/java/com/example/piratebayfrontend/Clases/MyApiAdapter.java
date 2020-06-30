@@ -24,7 +24,7 @@ public class MyApiAdapter {
 
         if (API_SERVICE == null) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrlErnesto)
+                    .baseUrl(baseUrlMariana)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(httpClient.build()) // <-- usamos el log level
                     .build();
